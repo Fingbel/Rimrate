@@ -113,6 +113,48 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &223371550
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4822299900917970, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822299900917970, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822299900917970, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822299900917970, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822299900917970, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822299900917970, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822299900917970, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822299900917970, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9e250206196b26a41bd4f6e22a7d60f4, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &372005633
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,6 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waterSprite: {fileID: 21300014, guid: 1eb5d31fd67f4914b9905618541a1d68, type: 3}
+  grassSprite: {fileID: 21300080, guid: 3d9398f63bd37d946920ffc379072a71, type: 3}
 --- !u!4 &372005635
 Transform:
   m_ObjectHideFlags: 0
@@ -181,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ed751272d19c04696a2c2a529537a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursor: {fileID: 2044047450}
 --- !u!4 &422215651
 Transform:
   m_ObjectHideFlags: 0
@@ -226,7 +270,7 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
@@ -271,3 +315,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2044047450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1674166619120742, guid: 9e250206196b26a41bd4f6e22a7d60f4,
+    type: 2}
+  m_PrefabInternal: {fileID: 223371550}

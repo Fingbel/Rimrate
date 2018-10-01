@@ -4,26 +4,31 @@ using UnityEngine;
 
 public class WorldController : MonoBehaviour
 {
-    public Sprite waterSprite;
+    public static WorldController Instance { get; protected set; }
 
-    World world;
+    //Le monde et les données des tiles
+    public World World { get; protected set; }
+
+    //Déclaration des tiles :)
+    public Sprite waterSprite;
+    public Sprite grassSprite;
 
     void Start()
     {
+        Instance = this;
         //Hello World !
-        world = new World();
-        for (int x = 0; x < world.Width; x++)
+        World = new World();
+        for (int x = 0; x < World.Width; x++)
         {
-            for (int y = 0; y < world.Height; y++)
+            for (int y = 0; y < World.Height; y++)
             {
-
-                //Association du tile_data au bon tile
-                Tile tile_data = world.GetTileAt(x, y);
+                //Récupération du tile_data
+                Tile tile_data = World.GetTileAt(x, y);
 
                 //Création du GameObject
                 GameObject tile_go = new GameObject();
 
-                //Initialisaiton du GameObject
+                //Initialisaiton du GameObject et de ses paramètres
                 tile_go.name = "Tile_" + x + "_" + y;
                 tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y);
                 tile_go.transform.SetParent(this.transform, true);
@@ -34,17 +39,10 @@ public class WorldController : MonoBehaviour
 
                 //Initialisation du callback + lambda
                 tile_data.RegisterTileTypeChangedCallback( (tile) => { OnTileTypeChanged(tile, tile_go); } );
-
             }
         }
         
     }
-
-    void Update()
-    {
-
-    }
-
     //execution du callback
     void OnTileTypeChanged(Tile tile_data, GameObject tile_go)
     {
@@ -52,13 +50,13 @@ public class WorldController : MonoBehaviour
         {
             tile_go.GetComponent<SpriteRenderer>().sprite = waterSprite;
         }
-        else if (tile_data.Type == Tile.TileType.Boat)
+        else if (tile_data.Type == Tile.TileType.Grass)
         {
-            tile_go.GetComponent<SpriteRenderer>().sprite = null;
+            tile_go.GetComponent<SpriteRenderer>().sprite = grassSprite;
         }
         else
         {
-            Debug.LogError("OnTileTypeChnaged - Unrecognized tile type.");
+            Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
         }
     }
 }

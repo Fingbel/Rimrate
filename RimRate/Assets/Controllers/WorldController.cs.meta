@@ -3,7 +3,9 @@ guid: 7736385e6a356f34e8d4a6a87416528c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - waterSprite: {instanceID: 0}
+  - grassSprite: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
