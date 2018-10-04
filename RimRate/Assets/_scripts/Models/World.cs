@@ -45,11 +45,11 @@ public class World
             {
                 if (Random.Range(0, 2) == 0)
                 {
-                    tiles[x, y].Type = Tile.TileType.Water;
+                    tiles[x, y].Type = TileType.Water;
                 }
                 else
                 {
-                    tiles[x, y].Type = Tile.TileType.Boat;
+                    tiles[x, y].Type = TileType.Boat;
                 }
             }
         }        

@@ -6,7 +6,7 @@ public class MouseController : MonoBehaviour
 {
     public GameObject CursorPrefab;
 
-    Tile.TileType buildModeTile = Tile.TileType.Grass;
+    TileType buildModeTile = TileType.Water;
 
     //Settings
     public float minZoomSettings = 3f;
@@ -158,12 +158,12 @@ public class MouseController : MonoBehaviour
     //BUILDING MODE
     public void SetMode_BuildGrass()
     {
-        buildModeTile = Tile.TileType.Grass;
+        buildModeTile = TileType.Grass;
     }
 
     public void SetMode_Bulldoze()
     {
-        buildModeTile = Tile.TileType.Water;
+        buildModeTile = TileType.Water;
     }
 
 }

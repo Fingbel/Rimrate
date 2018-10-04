@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
+
+public enum TileType { Water, Boat, Grass, Stone };
 
 public class Tile
 {
     //déclaration des différents type de tile
-    public enum TileType { Water, Boat, Grass, Stone };
+   
 
     private TileType _type = TileType.Water;
 
