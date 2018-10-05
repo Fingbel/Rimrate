@@ -11,9 +11,9 @@ TextureImporter:
     21300012: PA-wall-tiles_6
     21300014: PA-wall-tiles_7
     21300016: PA-wall-tiles_8
-    21300018: PA-wall-tiles_9
-    21300020: PA-wall-tiles_10
-    21300022: PA-wall-tiles_11
+    21300018: wall_NE
+    21300020: PA wall
+    21300022: wall_EWN
     21300024: PA-wall-tiles_12
     21300026: PA-wall-tiles_13
     21300028: PA-wall-tiles_14
@@ -58,14 +58,15 @@ TextureImporter:
     21300106: PA-wall-tiles_53
     21300108: PA-wall-tiles_54
     21300110: PA-wall-tiles_55
-    21300112: PA-wall-tiles_0
-    21300114: PA-wall-tiles_1
-    21300116: PA-wall-tiles_2
-    21300118: PA-wall-tiles_3
-    21300120: PA-wall-tiles_4
+    21300112: wall_EW
+    21300114: wall_
+    21300116: wall_SE
+    21300118: wall_SW
+    21300120: wall_EWS
     21300122: PA-wall-tiles_18
     21300124: PA-wall-tiles_19
     21300126: PA-wall-tiles_20
+    21300128: wall_NW
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -170,7 +171,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PA-wall-tiles_0
+      name: wall_EW
       rect:
         serializedVersion: 2
         x: 0
@@ -190,7 +191,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_1
+      name: wall_
       rect:
         serializedVersion: 2
         x: 32
@@ -210,7 +211,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_2
+      name: wall_SE
       rect:
         serializedVersion: 2
         x: 64
@@ -230,7 +231,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_3
+      name: wall_SW
       rect:
         serializedVersion: 2
         x: 96
@@ -250,7 +251,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_4
+      name: wall_EWS
       rect:
         serializedVersion: 2
         x: 128
@@ -310,26 +311,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_7
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 192
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1bafebb1cbfa209498fc5c253d3d68b3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: PA-wall-tiles_8
       rect:
         serializedVersion: 2
@@ -350,7 +331,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_9
+      name: wall_NE
       rect:
         serializedVersion: 2
         x: 64
@@ -370,10 +351,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_10
+      name: PA wall
       rect:
         serializedVersion: 2
-        x: 96
+        x: 0
         y: 192
         width: 32
         height: 32
@@ -390,7 +371,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_11
+      name: wall_EWN
       rect:
         serializedVersion: 2
         x: 128
@@ -590,46 +571,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_21
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f442c62fd9871084cb5e48926506e200
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PA-wall-tiles_22
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 128
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 29d3431c06915a34793db6be7cc3704b
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: PA-wall-tiles_23
       rect:
         serializedVersion: 2
@@ -665,66 +606,6 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f5cd0c647953ad5488d6f509bd2019c3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PA-wall-tiles_25
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bedcc8a296d41de499e275a66f8ec431
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PA-wall-tiles_26
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 128
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e666ba815a6028c478f5f4d29ea864ef
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PA-wall-tiles_27
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 128
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fcc0f6da08af811458310c8296ae8178
       vertices: []
       indices: 
       edges: []
@@ -1150,46 +1031,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_49
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7f8ff34dec5a7e74a92b3e62820c54ea
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PA-wall-tiles_50
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 89f389a005e696a41bc87f2e38d79f74
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: PA-wall-tiles_51
       rect:
         serializedVersion: 2
@@ -1230,61 +1071,21 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_53
+      name: wall_NW
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
+        x: 96
+        y: 192
         width: 32
         height: 32
-      alignment: 6
+      alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 59bb163aa836b29439909d8cfa340170
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PA-wall-tiles_54
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d590cbae7ffd0fd40961f10846f3eac4
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PA-wall-tiles_55
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 32
-        height: 32
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1f5c5b0d446edb348aad4be34c4516ce
+      spriteID: c1e45105cd7ce7c48bd0a52849a9b904
       vertices: []
       indices: 
       edges: []

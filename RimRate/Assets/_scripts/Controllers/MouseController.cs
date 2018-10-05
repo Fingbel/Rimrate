@@ -4,15 +4,12 @@ using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour
 {
-    public GameObject CursorPrefab;
-    bool buildModeIsObjects;
 
-    TileType buildModeTile = TileType.Water;
+    public GameObject circleCursorPrefab;
+
+    bool buildModeIsObjects = false;
+    TileType buildModeTile = TileType.Grass;
     string buildModeObjectType;
-
-    //Settings
-    public float minZoomSettings = 3f;
-    public float maxZoomSettings = 50f;
 
     // The world-position of the mouse last frame.
     Vector3 lastFramePosition;
@@ -28,8 +25,6 @@ public class MouseController : MonoBehaviour
         dragPreviewGameObjects = new List<GameObject>();
     }
 
-
-
     // Update is called once per frame
     void Update()
     {
@@ -40,20 +35,35 @@ public class MouseController : MonoBehaviour
         UpdateDragging();
         UpdateCameraMovement();
 
-        // Update de la derniere position de la souris
+        // Save the mouse position from this frame
+        // We don't use currFramePosition because we may have moved the camera.
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lastFramePosition.z = 0;
     }
-    
+
+    /*	void UpdateCursor() {
+            // Update the circle cursor position
+            Tile tileUnderMouse = WorldController.Instance.GetTileAtWorldCoord(currFramePosition);
+            if(tileUnderMouse != null) {
+                circleCursor.SetActive(true);
+                Vector3 cursorPosition = new Vector3(tileUnderMouse.X, tileUnderMouse.Y, 0);
+                circleCursor.transform.position = cursorPosition;
+            }
+            else {
+                // Mouse is outside of the valid tile space, so hide the cursor.
+                circleCursor.SetActive(false);
+            }
+        }
+    */
     void UpdateDragging()
     {
-        //Pour ne pas cliquer a travers l'UI
-
+        // If we're over a UI element, then bail out from this.
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
-        // Début du drag
+
+        // Start Drag
         if (Input.GetMouseButtonDown(0))
         {
             dragStartPosition = currFramePosition;
@@ -64,7 +74,7 @@ public class MouseController : MonoBehaviour
         int start_y = Mathf.FloorToInt(dragStartPosition.y);
         int end_y = Mathf.FloorToInt(currFramePosition.y);
 
-        //On vérifie si jamais c'est un drag dans le "mauvais" sens et on inverse sinon
+        // We may be dragging in the "wrong" direction, so flip things if needed.
         if (end_x < start_x)
         {
             int tmp = end_x;
@@ -78,17 +88,17 @@ public class MouseController : MonoBehaviour
             start_y = tmp;
         }
 
-        //Drag Preview Pooling
-        while(dragPreviewGameObjects.Count > 0)
+        // Clean up old drag previews
+        while (dragPreviewGameObjects.Count > 0)
         {
             GameObject go = dragPreviewGameObjects[0];
             dragPreviewGameObjects.RemoveAt(0);
-            SimplePool.Despawn (go);
+            SimplePool.Despawn(go);
         }
 
-        //Pendant le drag
         if (Input.GetMouseButton(0))
         {
+            // Display a preview of the drag area
             for (int x = start_x; x <= end_x; x++)
             {
                 for (int y = start_y; y <= end_y; y++)
@@ -96,30 +106,40 @@ public class MouseController : MonoBehaviour
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
                     if (t != null)
                     {
-                        GameObject go = (GameObject)SimplePool.Spawn(CursorPrefab, new Vector3(x, y, 0), Quaternion.identity);
-                        go.transform.parent = this.transform;
+                        // Display the building hint on top of this tile position
+                        GameObject go = SimplePool.Spawn(circleCursorPrefab, new Vector3(x, y, 0), Quaternion.identity);
+                        go.transform.SetParent(this.transform, true);
                         dragPreviewGameObjects.Add(go);
                     }
-                }                
+                }
             }
         }
-        // Fin du drag
+
+        // End Drag
         if (Input.GetMouseButtonUp(0))
         {
-            //On change tout les tiles en bouclant
+
+            // Loop through all the tiles
             for (int x = start_x; x <= end_x; x++)
             {
                 for (int y = start_y; y <= end_y; y++)
                 {
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
+
                     if (t != null)
                     {
-                        if (buildModeIsObjects == true) //Object mode 
+                        if (buildModeIsObjects == true)
                         {
-                            WorldController.Instance.World.PlaceInstalledObject(buildModeObjectType, t);
+                            // Create the InstalledObject and assign it to the tile
+
+                            // FIXME: Right now, we're just going to assume walls.
+                            WorldController.Instance.World.PlaceInstalledObject( buildModeObjectType, t );
+
+
                         }
                         else
                         {
+                            // We are in tile-changing mode.
                             t.Type = buildModeTile;
                         }
                     }
@@ -130,22 +150,20 @@ public class MouseController : MonoBehaviour
 
     void UpdateCameraMovement()
     {
-        // Gestion du déplacement de la caméra
+        // Handle screen panning
         if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
-        {   
+        {   // Right or Middle Mouse Button
 
             Vector3 diff = lastFramePosition - currFramePosition;
             Camera.main.transform.Translate(diff);
 
         }
 
-        //gestion du zoom
         Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis("Mouse ScrollWheel");
-        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, minZoomSettings, maxZoomSettings);
+
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3f, 25f);
     }
 
-
-    //BUILDING MODE
     public void SetMode_BuildGrass()
     {
         buildModeIsObjects = false;
@@ -160,9 +178,10 @@ public class MouseController : MonoBehaviour
 
     public void SetMode_BuildInstalledObject(string objectType)
     {
+        // Wall is not a Tile!  Wall is an "InstalledObject" that exists on TOP of a tile.
         buildModeIsObjects = true;
         buildModeObjectType = objectType;
-
     }
+
 
 }

@@ -1,17 +1,16 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using System;
 
-public enum TileType { Water, Grass};
+// TileType is the base type of the tile. In some tile-based games, that might be
+// the terrain type. For us, we only need to differentiate between empty space
+// and floor (a.k.a. the station structure/scaffold). Walls/Doors/etc... will be
+// InstalledObjects sitting on top of the floor.
+public enum TileType { Empty, Grass, Water };
 
 public class Tile
 {
-    //déclaration des différents type de tile
-   
-
-    private TileType _type = TileType.Grass;
-
-
-    //getter et setter avec callback
+    private TileType _type = TileType.Empty;
     public TileType Type
     {
         get { return _type; }
@@ -19,26 +18,33 @@ public class Tile
         {
             TileType oldType = _type;
             _type = value;
-            //Callback avec vérification du changement de type de tile 
+            // Call the callback and let things know we've changed.
 
             if (cbTileTypeChanged != null && oldType != _type)
                 cbTileTypeChanged(this);
         }
-    }    
+    }
+
+    // LooseObject is something like a drill or a stack of metal sitting on the floor
+    LooseObject looseObject;
+
+    // InstalledObject is something like a wall, door, or sofa.
+    InstalledObject installedObject;
+
+    // We need to know the context in which we exist. Probably. Maybe.
+    World world;
     public int X { get; protected set; }
     public int Y { get; protected set; }
 
-    //définition d'une tile
-    LooseObject looseObject;
-    InstalledObject InstalledObject;
-    World world;
-    int layer = 1;
-
-
-    //L'action appelé a chaque changement de type de tile
+    // The function we callback any time our type changes
     Action<Tile> cbTileTypeChanged;
 
-    //création de la tile
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Tile"/> class.
+    /// </summary>
+    /// <param name="world">A World instance.</param>
+    /// <param name="x">The x coordinate.</param>
+    /// <param name="y">The y coordinate.</param>
     public Tile(World world, int x, int y)
     {
         this.world = world;
@@ -46,32 +52,43 @@ public class Tile
         this.Y = y;
     }
 
-    //ACTIONS
+    /// <summary>
+    /// Register a function to be called back when our tile type changes.
+    /// </summary>
     public void RegisterTileTypeChangedCallback(Action<Tile> callback)
     {
         cbTileTypeChanged += callback;
     }
-    public void UnRegisterTileTypeChangedCallback(Action<Tile> callback)
+
+    /// <summary>
+    /// Unregister a callback.
+    /// </summary>
+    public void UnregisterTileTypeChangedCallback(Action<Tile> callback)
     {
         cbTileTypeChanged -= callback;
     }
 
     public bool PlaceObject(InstalledObject objInstance)
     {
-        if(objInstance == null)
+        if (objInstance == null)
         {
-            InstalledObject = null;
+            // We are uninstalling whatever was here before.
+            installedObject = null;
             return true;
         }
-        
-        if(objInstance != null)
+
+        // objInstance isn't null
+
+        if (installedObject != null)
         {
-            Debug.LogError("Il y a deja un InstalledObject sur ce tile");
+            Debug.LogError("Trying to assign an installed object to a tile that already has one!");
             return false;
         }
 
-        InstalledObject = objInstance;
+        // At this point, everything's fine!
+
+        installedObject = objInstance;
         return true;
     }
+
 }
-    
