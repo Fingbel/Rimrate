@@ -2,9 +2,9 @@
 using System.Collections;
 using System;
 
-// InstalledObjects are things like walls, doors, and furniture (e.g. a sofa)
+// Furniture are things like walls, doors, and furniture (e.g. a sofa)
 
-public class InstalledObject
+public class Furniture
 {
 
     // This represents the BASE tile of the object -- but in practice, large objects may actually occupy
@@ -25,37 +25,38 @@ public class InstalledObject
     int width;
     int height;
 
-    Action<InstalledObject> cbOnChanged;
+    public bool linksToNeighbour { get; protected set; }
+    Action<Furniture> cbOnChanged;
 
     // TODO: Implement larger objects
     // TODO: Implement object rotation
 
-    protected InstalledObject()
+    protected Furniture()
     {
 
     }
 
-    static public InstalledObject CreatePrototype(string objectType, float movementCost = 1f, int width = 1, int height = 1)
+    static public Furniture CreatePrototype(string objectType, float movementCost = 1f, int width = 1, int height = 1, bool linksToNeighbour = false)
     {
-        InstalledObject obj = new InstalledObject();
+        Furniture obj = new Furniture();
 
         obj.objectType = objectType;
         obj.movementCost = movementCost;
         obj.width = width;
         obj.height = height;
-
+        obj.linksToNeighbour = linksToNeighbour;
         return obj;
     }
 
-    static public InstalledObject PlaceInstance(InstalledObject proto, Tile tile)
+    static public Furniture PlaceInstance(Furniture proto, Tile tile)
     {
-        InstalledObject obj = new InstalledObject();
+        Furniture obj = new Furniture();
 
         obj.objectType = proto.objectType;
         obj.movementCost = proto.movementCost;
         obj.width = proto.width;
         obj.height = proto.height;
-
+        obj.linksToNeighbour = proto.linksToNeighbour;
         obj.tile = tile;
 
         // FIXME: This assumes we are 1x1!
@@ -71,12 +72,12 @@ public class InstalledObject
         return obj;
     }
 
-    public void RegisterOnChangedCallback(Action<InstalledObject> callbackFunc)
+    public void RegisterOnChangedCallback(Action<Furniture> callbackFunc)
     {
         cbOnChanged += callbackFunc;
     }
 
-    public void UnegisterOnChangedCallback(Action<InstalledObject> callbackFunc)
+    public void UnegisterOnChangedCallback(Action<Furniture> callbackFunc)
     {
         cbOnChanged -= callbackFunc;
     }

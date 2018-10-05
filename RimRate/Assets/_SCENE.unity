@@ -358,14 +358,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 422215650}
-        m_MethodName: SetMode_BuildInstalledObject
+        m_MethodName: SetMode_BuildFurniture
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Wall
+          m_StringArgument: wall
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -433,7 +433,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floorSprite: {fileID: 21300000, guid: 25b901dea109a5f47a498a5f279c4a8a, type: 3}
   waterSprite: {fileID: 21300316, guid: 25b901dea109a5f47a498a5f279c4a8a, type: 3}
-  wallSprite: {fileID: 21300114, guid: e16f6bc8eed364b4fbf78897908528ff, type: 3}
 --- !u!4 &372005635
 Transform:
   m_ObjectHideFlags: 0
@@ -654,7 +653,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 8.75, y: 6.01, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
