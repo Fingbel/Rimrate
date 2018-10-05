@@ -431,10 +431,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7736385e6a356f34e8d4a6a87416528c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSprite: {fileID: 21300000, guid: 25b901dea109a5f47a498a5f279c4a8a, type: 3}
-  waterSprite: {fileID: 21300552, guid: 25b901dea109a5f47a498a5f279c4a8a, type: 3}
-  grassSprite: {fileID: 21300000, guid: 25b901dea109a5f47a498a5f279c4a8a, type: 3}
-  wallSprite: {fileID: 21300030, guid: e16f6bc8eed364b4fbf78897908528ff, type: 3}
+  floorSprite: {fileID: 21300000, guid: 25b901dea109a5f47a498a5f279c4a8a, type: 3}
+  waterSprite: {fileID: 21300316, guid: 25b901dea109a5f47a498a5f279c4a8a, type: 3}
+  wallSprite: {fileID: 21300114, guid: e16f6bc8eed364b4fbf78897908528ff, type: 3}
 --- !u!4 &372005635
 Transform:
   m_ObjectHideFlags: 0
@@ -475,10 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ed751272d19c04696a2c2a529537a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CursorPrefab: {fileID: 1674166619120742, guid: 9e250206196b26a41bd4f6e22a7d60f4,
+  circleCursorPrefab: {fileID: 1674166619120742, guid: 9e250206196b26a41bd4f6e22a7d60f4,
     type: 2}
-  minZoomSettings: 3
-  maxZoomSettings: 50
 --- !u!4 &422215651
 Transform:
   m_ObjectHideFlags: 0
