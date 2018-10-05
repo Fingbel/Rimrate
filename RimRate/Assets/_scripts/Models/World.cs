@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class World
 {
     //définition du monde
     Tile[,] tiles;
+
+    Dictionary<string, InstalledObject> installedObjectPrototypes;
+
     public int Width { get; protected set; }
     public int Height { get; protected set; }
 
@@ -23,8 +26,21 @@ public class World
             }
         }
         Debug.Log("Monde créer avec " + (width * height) + " tiles");
+        CreateInstalledObjectPrototypes();
     }
 
+    void CreateInstalledObjectPrototypes()
+    {
+        installedObjectPrototypes = new Dictionary<string, InstalledObject>();
+
+        installedObjectPrototypes.Add("Wall", InstalledObject.CreatePrototype(
+                                    "Wall",
+                                    0,
+                                    1,
+                                    1
+                                    )
+        );
+    }
     //FONCTION DE récupération des coordonnées de tile
     public Tile GetTileAt(int x, int y)
     {
@@ -35,23 +51,15 @@ public class World
         }
         return tiles[x,y];
     }
-    
-    //DEBUG FONCTION
-    public void RandomizeTile()
+
+    public void PlaceInstalledObject(string objectType, Tile t)
     {
-        for (int x = 0; x < Width; x++)
+        Debug.Log("PlaceInstalledObject");
+        if (installedObjectPrototypes.ContainsKey(objectType) == false)
         {
-            for (int y = 0; y < Height; y++)
-            {
-                if (Random.Range(0, 2) == 0)
-                {
-                    tiles[x, y].Type = TileType.Water;
-                }
-                else
-                {
-                    tiles[x, y].Type = TileType.Boat;
-                }
-            }
-        }        
+            Debug.LogError("Dictionary installedObjectPrototypes ne contient pas de proto pour la clé" + objectType);
+            return;
+        }
+        InstalledObject.PlaceInstance(installedObjectPrototypes[objectType], t);
     }
 }

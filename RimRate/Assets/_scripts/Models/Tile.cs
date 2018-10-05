@@ -1,13 +1,15 @@
 ﻿using System;
+using UnityEngine;
 
-public enum TileType { Water, Boat, Grass, Stone };
+public enum TileType { Water, Grass};
 
 public class Tile
 {
     //déclaration des différents type de tile
    
 
-    private TileType _type = TileType.Water;
+    private TileType _type = TileType.Grass;
+
 
     //getter et setter avec callback
     public TileType Type
@@ -28,8 +30,9 @@ public class Tile
 
     //définition d'une tile
     LooseObject looseObject;
-    InstalledObject installedObject;
+    InstalledObject InstalledObject;
     World world;
+    int layer = 1;
 
 
     //L'action appelé a chaque changement de type de tile
@@ -51,6 +54,24 @@ public class Tile
     public void UnRegisterTileTypeChangedCallback(Action<Tile> callback)
     {
         cbTileTypeChanged -= callback;
+    }
+
+    public bool PlaceObject(InstalledObject objInstance)
+    {
+        if(objInstance == null)
+        {
+            InstalledObject = null;
+            return true;
+        }
+        
+        if(objInstance != null)
+        {
+            Debug.LogError("Il y a deja un InstalledObject sur ce tile");
+            return false;
+        }
+
+        InstalledObject = objInstance;
+        return true;
     }
 }
     

@@ -11,8 +11,10 @@ public class WorldController : MonoBehaviour
     public World World { get; protected set; }
 
     //Déclaration des tiles :)
+    public Sprite defaultSprite;
     public Sprite waterSprite;
     public Sprite grassSprite;
+    public Sprite wallSprite;
 
     Dictionary<Tile, GameObject> tileGameObjectMap;
 
@@ -44,7 +46,7 @@ public class WorldController : MonoBehaviour
 
                 //Initialisation du SpriteRenderer et de la mer
                 SpriteRenderer tile_sr = tile_go.AddComponent<SpriteRenderer>();
-                tile_sr.sprite = waterSprite;
+                tile_sr.sprite = defaultSprite;
 
                 //Initialisation du callback pour update le gameobject quand le tile_type change
                 tile_data.RegisterTileTypeChangedCallback( OnTileTypeChanged);
@@ -84,7 +86,7 @@ public class WorldController : MonoBehaviour
         else if (tile_data.Type == TileType.Grass)
         {
             tile_go.GetComponent<SpriteRenderer>().sprite = grassSprite;
-        }
+        }        
         else
         {
             Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");

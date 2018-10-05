@@ -5,8 +5,10 @@ using UnityEngine.EventSystems;
 public class MouseController : MonoBehaviour
 {
     public GameObject CursorPrefab;
+    bool buildModeIsObjects;
 
     TileType buildModeTile = TileType.Water;
+    string buildModeObjectType;
 
     //Settings
     public float minZoomSettings = 3f;
@@ -43,25 +45,6 @@ public class MouseController : MonoBehaviour
         lastFramePosition.z = 0;
     }
     
-    void UpdateCursor()
-    {
-        /*
-        // Update du curseur
-        Tile tileUnderMouse = WorldController.Instance.GetTileAtWorldCoord(currFramePosition);
-        if (tileUnderMouse != null)
-        {
-            CursorPrefab.SetActive(true);
-            Vector3 cursorPosition = new Vector3(tileUnderMouse.X, tileUnderMouse.Y, 0);
-            CursorPrefab.transform.position = cursorPosition;
-        }
-        else
-        {
-            // Souris hors limite, cacher le curseur
-            CursorPrefab.SetActive(false);
-        }
-        */
-    }
-
     void UpdateDragging()
     {
         //Pour ne pas cliquer a travers l'UI
@@ -81,7 +64,7 @@ public class MouseController : MonoBehaviour
         int start_y = Mathf.FloorToInt(dragStartPosition.y);
         int end_y = Mathf.FloorToInt(currFramePosition.y);
 
-        //On vérifie si jamais c'est un drag dans le "mauvais" sens et on inverse
+        //On vérifie si jamais c'est un drag dans le "mauvais" sens et on inverse sinon
         if (end_x < start_x)
         {
             int tmp = end_x;
@@ -131,7 +114,14 @@ public class MouseController : MonoBehaviour
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
                     if (t != null)
                     {
-                        t.Type = buildModeTile;
+                        if (buildModeIsObjects == true) //Object mode 
+                        {
+                            WorldController.Instance.World.PlaceInstalledObject(buildModeObjectType, t);
+                        }
+                        else
+                        {
+                            t.Type = buildModeTile;
+                        }
                     }
                 }
             }
@@ -158,12 +148,21 @@ public class MouseController : MonoBehaviour
     //BUILDING MODE
     public void SetMode_BuildGrass()
     {
+        buildModeIsObjects = false;
         buildModeTile = TileType.Grass;
     }
 
     public void SetMode_Bulldoze()
     {
+        buildModeIsObjects = false;
         buildModeTile = TileType.Water;
+    }
+
+    public void SetMode_BuildInstalledObject(string objectType)
+    {
+        buildModeIsObjects = true;
+        buildModeObjectType = objectType;
+
     }
 
 }
