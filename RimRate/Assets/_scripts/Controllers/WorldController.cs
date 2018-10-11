@@ -11,6 +11,7 @@ public class WorldController : MonoBehaviour
     // it a pretty simple way to handle it.
     public Sprite floorSprite; //FIXME
     public Sprite waterSprite; //FIXME
+    public Sprite emptySprite; //FIXME
 
 
     Dictionary<Tile, GameObject> tileGameObjectMap;
@@ -19,16 +20,16 @@ public class WorldController : MonoBehaviour
     Dictionary<string, Sprite> furnitureSprites;
     // The world and tile data
     public World World { get; protected set; }
-
+  
     // Use this for initialization
     void Start()
     {
         furnitureSprites = new Dictionary<string, Sprite>();
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/Tileset/");
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/Furnitures/");
         Debug.Log("LOADED RESSOURCES:");
         foreach(Sprite s in sprites)
         {
-            Debug.Log(s);
+            //Debug.Log(s);
             furnitureSprites[s.name] = s;
         }
 
@@ -65,9 +66,8 @@ public class WorldController : MonoBehaviour
                 tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
                 tile_go.transform.SetParent(this.transform, true);
 
-                // Add a sprite renderer, but don't bother setting a sprite
-                // because all the tiles are empty right now.
-                tile_go.AddComponent<SpriteRenderer>();
+
+                tile_go.AddComponent<SpriteRenderer>().sprite = emptySprite;
                 
 
                 // Register our callback so that our GameObject gets updated whenever
@@ -134,6 +134,10 @@ public class WorldController : MonoBehaviour
         {
             tile_go.GetComponent<SpriteRenderer>().sprite = waterSprite;
         }
+        else if(tile_data.Type == TileType.Empty)
+        {
+            tile_go.GetComponent<SpriteRenderer>().sprite = emptySprite;
+        }
         else
         {
             Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
@@ -155,26 +159,41 @@ public class WorldController : MonoBehaviour
         return World.GetTileAt(x, y);
     }
 
-    public void OnFurnitureCreated(Furniture obj)
+    public void OnFurnitureCreated(Furniture furn)
     {
         //Debug.Log("OnFurnitureCreated");
         //create a visual GameObject linked to this data
         // This creates a new GameObject and adds it to our scene.
-        GameObject obj_go = new GameObject();
+        GameObject furn_go = new GameObject();
 
         // Add our tile/GO pair to the dictionary.
-        furnitureGameObjectMap.Add(obj, obj_go);
+        furnitureGameObjectMap.Add(furn, furn_go);
 
-        obj_go.name = obj.objectType +"_"+ obj.tile.X +"_" + obj.tile.Y;
-        obj_go.transform.position = new Vector3(obj.tile.X, obj.tile.Y, 0);
-        obj_go.transform.SetParent(this.transform, true);
+        furn_go.name = furn.objectType +"_"+ furn.tile.X +"_" + furn.tile.Y;
+        furn_go.transform.position = new Vector3(furn.tile.X, furn.tile.Y, 0);
+        furn_go.transform.SetParent(this.transform, true);
 
 
-        obj_go.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(obj);
+        furn_go.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
 
         // Register our callback so that our GameObject gets updated whenever
         // the objects's type changes.
-        obj.RegisterOnChangedCallback(OnFurnitureChanged);
+        furn.RegisterOnChangedCallback(OnFurnitureChanged);
+    }
+
+    void OnFurnitureChanged(Furniture furn)
+    {
+        
+        //Update des gfx des furnitures
+        if (furnitureGameObjectMap.ContainsKey(furn) == false)
+        {
+            Debug.LogError("OnFurnitureChanged -- pas de key " + furn + "dans le dictionnary " + furnitureGameObjectMap);
+            return;
+        }
+        GameObject furn_go = furnitureGameObjectMap[furn];
+        furn_go.GetComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
+
+
     }
 
     Sprite GetSpriteForFurniture(Furniture obj){
@@ -217,8 +236,5 @@ public class WorldController : MonoBehaviour
         return furnitureSprites[spriteName];
     }
 
-    void OnFurnitureChanged (Furniture obj)
-    {
-        Debug.LogError("OnFurnitureChanged - Not Implemented");
-    }
+   
 }

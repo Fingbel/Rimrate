@@ -63,10 +63,11 @@ TextureImporter:
     21300116: wall_ES
     21300118: wall_SW
     21300120: wall_ESW
-    21300122: wall_
-    21300124: PA-wall-tiles_19
-    21300126: PA-wall-tiles_20
+    21300122: wall_NES
+    21300124: wall_NSW
+    21300126: wall_NESW
     21300128: wall_NW
+    21300130: wall_
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -511,7 +512,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wall_
+      name: wall_NES
       rect:
         serializedVersion: 2
         x: 128
@@ -531,7 +532,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_19
+      name: wall_NSW
       rect:
         serializedVersion: 2
         x: 160
@@ -551,7 +552,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PA-wall-tiles_20
+      name: wall_NESW
       rect:
         serializedVersion: 2
         x: 192
@@ -626,6 +627,26 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c1e45105cd7ce7c48bd0a52849a9b904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wall_
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 128
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b70de895adeccb046bc56d3a13bce7f7
       vertices: []
       indices: 
       edges: []

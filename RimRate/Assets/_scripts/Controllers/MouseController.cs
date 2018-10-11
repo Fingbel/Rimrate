@@ -40,8 +40,8 @@ public class MouseController : MonoBehaviour
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lastFramePosition.z = 0;
     }
-
-    /*	void UpdateCursor() {
+    /*
+    	void UpdateCursor() {
             // Update the circle cursor position
             Tile tileUnderMouse = WorldController.Instance.GetTileAtWorldCoord(currFramePosition);
             if(tileUnderMouse != null) {
@@ -170,10 +170,17 @@ public class MouseController : MonoBehaviour
         buildModeTile = TileType.Grass;
     }
 
-    public void SetMode_Bulldoze()
+    public void SetMode_BuildWater()
     {
         buildModeIsObjects = false;
         buildModeTile = TileType.Water;
+    }
+
+
+        public void SetMode_Bulldoze()
+    {
+        buildModeIsObjects = false;
+        buildModeTile = TileType.Empty;
     }
 
     public void SetMode_BuildFurniture(string objectType)

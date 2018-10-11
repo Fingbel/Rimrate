@@ -44,3 +44,9 @@ TagManager:
   - name: UI
     uniqueID: 649392231
     locked: 0
+  - name: furniture
+    uniqueID: 651607247
+    locked: 0
+  - name: tile
+    uniqueID: 3007384017
+    locked: 0

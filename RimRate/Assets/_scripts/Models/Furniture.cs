@@ -60,14 +60,39 @@ public class Furniture
         obj.tile = tile;
 
         // FIXME: This assumes we are 1x1!
-        if (tile.PlaceObject(obj) == false)
+        if (tile.PlaceFurniture(obj) == false)
         {
-            // For some reason, we weren't able to place our object in this tile.
-            // (Probably it was already occupied.)
 
-            // Do NOT return our newly instantiated object.
-            // (It will be garbage collected.)
             return null;
+        }
+        if (obj.linksToNeighbour)
+        {
+            //cette furniture est lié a ses voisins
+            Tile t;
+            int x = tile.X;
+            int y = tile.Y;
+            t = tile.world.GetTileAt(x, y + 1);
+            if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+            {
+                t.furniture.cbOnChanged(t.furniture);
+            }
+            t = tile.world.GetTileAt(x + 1, y);
+            if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+            {
+                t.furniture.cbOnChanged(t.furniture);
+            }
+            t = tile.world.GetTileAt(x, y - 1);
+            if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+            {
+
+                t.furniture.cbOnChanged(t.furniture);
+            }
+            t = tile.world.GetTileAt(x - 1, y);
+            if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+            {
+                t.furniture.cbOnChanged(t.furniture);
+            }
+
         }
         return obj;
     }

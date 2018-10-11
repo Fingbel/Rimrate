@@ -23,7 +23,7 @@ public class World
     /// </summary>
     /// <param name="width">Width in tiles.</param>
     /// <param name="height">Height in tiles.</param>
-    public World(int width = 100, int height = 100)
+    public World(int width = 100, int height = 100) //FIXME : Hardcorded
     {
         Width = width;
         Height = height;
@@ -42,6 +42,8 @@ public class World
 
         CreateFurniturePrototypes();
     }
+
+    //FIXME : Hardcoded
     void CreateFurniturePrototypes()
     {
         furniturePrototypes = new Dictionary<string, Furniture>();

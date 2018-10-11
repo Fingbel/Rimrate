@@ -11,6 +11,7 @@ public enum TileType { Empty, Grass, Water };
 public class Tile
 {
     private TileType _type = TileType.Empty;
+
     public TileType Type
     {
         get { return _type; }
@@ -32,7 +33,7 @@ public class Tile
     public Furniture furniture { get; protected set; }
 
     // We need to know the context in which we exist. Probably. Maybe.
-    World world;
+    public World world { get; protected set; }
     public int X { get; protected set; }
     public int Y { get; protected set; }
 
@@ -68,7 +69,7 @@ public class Tile
         cbTileTypeChanged -= callback;
     }
 
-    public bool PlaceObject(Furniture objInstance)
+    public bool PlaceFurniture(Furniture objInstance)
     {
         if (objInstance == null)
         {
