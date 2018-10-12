@@ -5,31 +5,27 @@ using System;
 public class World
 {
 
-    // A two-dimensional array to hold our tile data.
+    // Un tableau a deux dimensions pour contenir nos tiles
     Tile[,] tiles;
 
     Dictionary<string, Furniture> furniturePrototypes;
 
-    // The tile width of the world.
+    //La largeur en tile
     public int Width { get; protected set; }
 
-    // The tile height of the world
+    //La hauteur en tile
     public int Height { get; protected set; }
 
     Action<Furniture> cbFurnitureCreated;
     Action<Tile> cbTileChanged;
 
     //FIXME : Most likely will be replaced with a dedicated class for managing job queueS
-    public Queue<Job> jobQueue;
+    public JobQueue jobQueue;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="World"/> class.
-    /// </summary>
-    /// <param name="width">Width in tiles.</param>
-    /// <param name="height">Height in tiles.</param>
-    public World(int width = 100, int height = 100) //FIXME : Hardcorded
+    /// Initialisation de la classe World
+    public World(int width = 100, int height = 100) 
     {
-        jobQueue = new Queue<Job>();
+        jobQueue = new JobQueue();
         Width = width;
         Height = height;
 
@@ -49,7 +45,6 @@ public class World
         CreateFurniturePrototypes();
     }
 
-    //FIXME : Hardcoded
     void CreateFurniturePrototypes()
     {
         furniturePrototypes = new Dictionary<string, Furniture>();
@@ -65,12 +60,7 @@ public class World
         );
     }
 
-    /// <summary>
-    /// Gets the tile data at x and y.
-    /// </summary>
-    /// <returns>The <see cref="Tile"/>.</returns>
-    /// <param name="x">The x coordinate.</param>
-    /// <param name="y">The y coordinate.</param>
+    /// Fonction pour récupérer la tile aux coordonnées globale x et y
     public Tile GetTileAt(int x, int y)
     {
         if (x > Width || x < 0 || y > Height || y < 0)
@@ -91,8 +81,7 @@ public class World
         Furniture obj = Furniture.PlaceInstance(furniturePrototypes[objectType], t);
 
         if (obj == null)
-        {
-            //Failed to place an object -- most likely there was already something there
+        {          
             return;
         }
         if(cbFurnitureCreated != null)
@@ -100,6 +89,8 @@ public class World
             cbFurnitureCreated(obj);
         }
     }
+
+    //Les fonctions d'enregistrement / désenregistrements
 
     public void RegisterFurnitureCreated(Action<Furniture> callbackfunc)
     {
@@ -126,9 +117,20 @@ public class World
         cbTileChanged(t);
     }
 
+    //fonctions de vérifications de la validité de l'emplacement
     public bool IsFurniturePlacementValid (string furnitureType, Tile t)
     {
         return furniturePrototypes[furnitureType].IsValidPosition(t);
         
+    }
+
+    public Furniture GetFurniturePrototype(string objectType)
+    {
+        if(furniturePrototypes.ContainsKey(objectType)== false)
+        {
+            Debug.LogError("No furniture with type : " + objectType);
+        }
+
+        return furniturePrototypes[objectType];
     }
 }

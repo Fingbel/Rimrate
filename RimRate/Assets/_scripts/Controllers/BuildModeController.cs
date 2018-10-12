@@ -43,18 +43,19 @@ public class BuildModeController : MonoBehaviour
             string furnitureType = buildModeObjectType;
             if (WorldController.Instance.world.IsFurniturePlacementValid(furnitureType, t) && t.pendingFurnitureJob == null)
             {
-                Job j = new Job(t, (theJob) =>
+                Job j = new Job(t,furnitureType, (theJob) =>
                 {
                     WorldController.Instance.world.PlaceFurniture(furnitureType, theJob.tile);
                     t.pendingFurnitureJob = null;
                 }
                 );
-                t.pendingFurnitureJob = j;
+                 
 
+                t.pendingFurnitureJob = j;
                 j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingFurnitureJob = null; });
 
+                //ajout du job a la queue de jobs
                 WorldController.Instance.world.jobQueue.Enqueue(j);
-                Debug.Log("Job Queue Size: " + WorldController.Instance.world.jobQueue.Count + " jobs");
             }
         }
         else

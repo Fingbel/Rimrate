@@ -7,27 +7,13 @@ using System;
 public class Furniture
 {
 
-    // This represents the BASE tile of the object -- but in practice, large objects may actually occupy
-    // multile tiles.
     public Tile tile { get; protected set; }
-
-    // This "objectType" will be queried by the visual system to know what sprite to render for this object
     public string objectType { get; protected set; }
-
-    // This is a multipler. So a value of "2" here, means you move twice as slowly (i.e. at half speed)
-    // Tile types and other environmental effects may be combined.
-    // For example, a "rough" tile (cost of 2) with a table (cost of 3) that is on fire (cost of 3)
-    // would have a total movement cost of (2+3+3 = 8), so you'd move through this tile at 1/8th normal speed.
-    // SPECIAL: If movementCost = 0, then this tile is impassible. (e.g. a wall).
     float movementCost;
-
-    // For example, a sofa might be 3x2 (actual graphics only appear to cover the 3x1 area, but the extra row is for leg room.)
     int width;
     int height;
-
     public bool linksToNeighbour { get; protected set; }
     Action<Furniture> cbOnChanged;
-
     Func<Tile, bool> funcPositionValidation;
 
     // TODO: Implement larger objects
@@ -68,14 +54,13 @@ public class Furniture
         obj.linksToNeighbour = proto.linksToNeighbour;
         obj.tile = tile;
 
-        // FIXME: This assumes we are 1x1!
+        // FIXME: Nous ne gerons que les furniture de taille 1x1
         if (tile.PlaceFurniture(obj) == false)
         {
             return null;
         }
-        if (obj.linksToNeighbour)
-        {
-            //cette furniture est lié a ses voisins
+        if (obj.linksToNeighbour) //cette furniture est lié a ses voisins
+        {            
             Tile t;
             int x = tile.X;
             int y = tile.Y;
@@ -105,6 +90,8 @@ public class Furniture
         return obj;
     }
 
+    //Les fonctions d'enregistrement / désenregistrements
+
     public void RegisterOnChangedCallback(Action<Furniture> callbackFunc)
     {
         cbOnChanged += callbackFunc;
@@ -114,37 +101,38 @@ public class Furniture
     {
         cbOnChanged -= callbackFunc;
     }
+   
 
+    //FIXME : NE DEVRAIT PAS ETRE PUBLIC
+    public bool __IsValidPosition(Tile t)
+    {
+        if (t.Type != TileType.Floor)
+        {
+            return false;
+        }
+        if (t.furniture != null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    //fonction de vérifications de la validité de l'emplacement
     public bool IsValidPosition(Tile t)
     {
         return funcPositionValidation(t);
     }
 
-    public bool __IsValidPosition(Tile t)
-    {
-        //Make sure tile is floor
-        //make sur tile doesn't already have a furniture
-        if (t.Type != TileType.Floor)
-        {
-            return false;
-        }
-
-        if (t.furniture != null)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
+    //fonctions de vérifications de la validité de l'emplacement pour les portes
     public bool IsValidPosition_Door(Tile t)
     {
+        //assurons nous de la validité de base
         if (__IsValidPosition(t) == false)
         {
             return false;
         }
 
-         //make sure we have a pair of E/W walls or N/S walls
+         //TODO : s'assurer qu'il y a un mur en N/S ou en E/W
         return true;
     }
 }

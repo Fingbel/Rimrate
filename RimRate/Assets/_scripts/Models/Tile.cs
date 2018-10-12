@@ -2,16 +2,14 @@
 using System.Collections;
 using System;
 
-// TileType is the base type of the tile. In some tile-based games, that might be
-// the terrain type. For us, we only need to differentiate between empty space
-// and floor (a.k.a. the station structure/scaffold). Walls/Doors/etc... will be
-// furniture sitting on top of the floor.
+//TileType est le Type de la case 
 public enum TileType { Empty, Floor, Water };
 
 public class Tile
 {
     private TileType _type = TileType.Empty;
 
+    //Appel du callback quand on change le tile.TileType et getter classique
     public TileType Type
     {
         get { return _type; }
@@ -19,35 +17,24 @@ public class Tile
         {
             TileType oldType = _type;
             _type = value;
-            // Call the callback and let things know we've changed.
-
+            
             if (cbTileChanged != null && oldType != _type)
                 cbTileChanged(this);
         }
     }
 
-    // LooseObject is something like a drill or a stack of metal sitting on the floor
-    Inventory inventory;
-
-    // Furniture is something like a wall, door, or sofa.
+    //Initialisation des variables
+    public Inventory inventory{ get; protected set; }
     public Furniture furniture { get; protected set; }
-
     public Job pendingFurnitureJob;
-
-    // We need to know the context in which we exist. Probably. Maybe.
     public World world { get; protected set; }
     public int X { get; protected set; }
     public int Y { get; protected set; }
 
-    // The function we callback any time our type changes
+    // L'action qui est appelé par le callback quand le tileType a changé
     Action<Tile> cbTileChanged;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Tile"/> class.
-    /// </summary>
-    /// <param name="world">A world instance.</param>
-    /// <param name="x">The x coordinate.</param>
-    /// <param name="y">The y coordinate.</param>
+    //initialisation d'une nouvelle instance de tile
     public Tile(World world, int x, int y)
     {
         this.world = world;
@@ -55,17 +42,15 @@ public class Tile
         this.Y = y;
     }
 
-    /// <summary>
-    /// Register a function to be called back when our tile type changes.
-    /// </summary>
+    /// Enregistre la fonction a appeléquand le tileType a changé.
+
     public void RegisterTileTypeChangedCallback(Action<Tile> callback)
     {
         cbTileChanged += callback;
     }
 
-    /// <summary>
-    /// Unregister a callback.
-    /// </summary>
+
+    /// Désenregistrement du callback
     public void UnregisterTileTypeChangedCallback(Action<Tile> callback)
     {
         cbTileChanged -= callback;
@@ -75,20 +60,19 @@ public class Tile
     {
         if (objInstance == null)
         {
-            // We are uninstalling whatever was here before.
+            // On enleve ce qu'il y avait avant
             furniture = null;
             return true;
         }
 
-        // objInstance isn't null
-
+        // objInstance n'est pas null
         if (furniture != null)
         {
             Debug.LogError("Trying to assign an furniture to a tile that already has one!");
             return false;
         }
 
-        // At this point, everything's fine!
+        // Nous avons tout testé, plaçons l'instance de la furniture
 
         furniture = objInstance;
         return true;
