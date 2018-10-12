@@ -17,6 +17,7 @@ public class World
     public int Height { get; protected set; }
 
     Action<Furniture> cbFurnitureCreated;
+    Action<Tile> cbTileChanged;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="World"/> class.
@@ -35,6 +36,7 @@ public class World
             for (int y = 0; y < Height; y++)
             {
                 tiles[x, y] = new Tile(this, x, y);
+                tiles[x, y].RegisterTileTypeChangedCallback(OntileChanged);
             }
         }
 
@@ -102,5 +104,21 @@ public class World
     public void UnregisterFurnitureCreated(Action<Furniture> callbackfunc)
     {
         cbFurnitureCreated -= callbackfunc;
+    }
+
+    public void RegisterTileChanged(Action<Tile> callbackfunc)
+    {
+        cbTileChanged += callbackfunc;
+    }
+    public void UnregisterTileChanged(Action<Tile> callbackfunc)
+    {
+        cbTileChanged -= callbackfunc;
+    }
+
+    void OntileChanged (Tile t)
+    {
+        if (cbTileChanged == null)
+            return;
+        cbTileChanged(t);
     }
 }

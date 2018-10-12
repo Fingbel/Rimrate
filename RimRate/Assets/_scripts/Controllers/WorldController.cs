@@ -20,18 +20,14 @@ public class WorldController : MonoBehaviour
     Dictionary<string, Sprite> furnitureSprites;
     // The world and tile data
     public World World { get; protected set; }
-  
+
+    
     // Use this for initialization
-    void Start()
+    void OnEnable()
     {
-        furnitureSprites = new Dictionary<string, Sprite>();
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/Furnitures/");
-        Debug.Log("LOADED RESSOURCES:");
-        foreach(Sprite s in sprites)
-        {
-            //Debug.Log(s);
-            furnitureSprites[s.name] = s;
-        }
+        LoadSprite();
+
+
 
         if (Instance != null)
         {
@@ -68,20 +64,21 @@ public class WorldController : MonoBehaviour
 
 
                 tile_go.AddComponent<SpriteRenderer>().sprite = emptySprite;
+                tile_go.GetComponent<SpriteRenderer>().sortingLayerName = "tile";
                 
 
                 // Register our callback so that our GameObject gets updated whenever
                 // the tile's type changes.
-                tile_data.RegisterTileTypeChangedCallback(OnTileTypeChanged);
+                
+                CenterCamera();
+
+
             }
         }
+        World.RegisterTileChanged(OnTileChanged);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+   
 
     // THIS IS AN EXAMPLE -- NOT CURRENTLY USED
     void DestroyAllTileGameObjects()
@@ -98,7 +95,7 @@ public class WorldController : MonoBehaviour
             tileGameObjectMap.Remove(tile_data);
 
             // Unregister the callback!
-            tile_data.UnregisterTileTypeChangedCallback(OnTileTypeChanged);
+            tile_data.UnregisterTileTypeChangedCallback(OnTileChanged);
 
             // Destroy the visual GameObject
             Destroy(tile_go);
@@ -109,7 +106,7 @@ public class WorldController : MonoBehaviour
     }
 
     // This function should be called automatically whenever a tile's type gets changed.
-    void OnTileTypeChanged(Tile tile_data)
+    void OnTileChanged(Tile tile_data)
     {
 
         if (tileGameObjectMap.ContainsKey(tile_data) == false)
@@ -126,7 +123,7 @@ public class WorldController : MonoBehaviour
             return;
         }
 
-        if (tile_data.Type == TileType.Grass)
+        if (tile_data.Type == TileType.Floor)
         {
             tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
         }
@@ -175,7 +172,7 @@ public class WorldController : MonoBehaviour
 
 
         furn_go.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
-
+        furn_go.GetComponent<SpriteRenderer>().sortingLayerName = "furniture";
         // Register our callback so that our GameObject gets updated whenever
         // the objects's type changes.
         furn.RegisterOnChangedCallback(OnFurnitureChanged);
@@ -236,5 +233,21 @@ public class WorldController : MonoBehaviour
         return furnitureSprites[spriteName];
     }
 
+    void CenterCamera()
+    {
+        Camera.main.transform.position = new Vector3 (World.Width / 2, World.Width / 2, Camera.main.transform.position.z);
+    }
+
+    void LoadSprite()
+    {
+        furnitureSprites = new Dictionary<string, Sprite>();
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/Furnitures/");
+        Debug.Log("LOADED RESSOURCES:");
+        foreach (Sprite s in sprites)
+        {
+            //Debug.Log(s);
+            furnitureSprites[s.name] = s;
+        }
+    }
    
 }

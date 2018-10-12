@@ -28,6 +28,8 @@ public class Furniture
     public bool linksToNeighbour { get; protected set; }
     Action<Furniture> cbOnChanged;
 
+    Func<Tile, bool> funcPositionValidation;
+
     // TODO: Implement larger objects
     // TODO: Implement object rotation
 
@@ -45,11 +47,18 @@ public class Furniture
         obj.width = width;
         obj.height = height;
         obj.linksToNeighbour = linksToNeighbour;
+        obj.funcPositionValidation = obj.IsValidPosition;
         return obj;
     }
 
     static public Furniture PlaceInstance(Furniture proto, Tile tile)
     {
+        if (proto.funcPositionValidation(tile) == false)
+        {
+            Debug.LogError("PlaceInstance -- position validation fonction return FALSE");
+            return null;
+        }
+
         Furniture obj = new Furniture();
 
         obj.objectType = proto.objectType;
@@ -62,7 +71,6 @@ public class Furniture
         // FIXME: This assumes we are 1x1!
         if (tile.PlaceFurniture(obj) == false)
         {
-
             return null;
         }
         if (obj.linksToNeighbour)
@@ -107,4 +115,31 @@ public class Furniture
         cbOnChanged -= callbackFunc;
     }
 
+    public bool IsValidPosition(Tile t)
+    {
+        //Make sure tile is floor
+        //make sur tile doesn't already have a furniture
+        if (t.Type != TileType.Floor)
+        {
+            return false;
+        }
+
+        if (t.furniture != null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool IsValidPosition_Door(Tile t)
+    {
+        if (IsValidPosition(t) == false)
+        {
+            return false;
+        }
+
+         //make sure we have a pair of E/W walls or N/S walls
+        return true;
+    }
 }

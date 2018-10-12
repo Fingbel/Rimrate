@@ -8,7 +8,7 @@ public class MouseController : MonoBehaviour
     public GameObject circleCursorPrefab;
 
     bool buildModeIsObjects = false;
-    TileType buildModeTile = TileType.Grass;
+    TileType buildModeTile = TileType.Floor;
     string buildModeObjectType;
 
     // The world-position of the mouse last frame.
@@ -109,6 +109,7 @@ public class MouseController : MonoBehaviour
                         // Display the building hint on top of this tile position
                         GameObject go = SimplePool.Spawn(circleCursorPrefab, new Vector3(x, y, 0), Quaternion.identity);
                         go.transform.SetParent(this.transform, true);
+                        go.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
                         dragPreviewGameObjects.Add(go);
                     }
                 }
@@ -118,7 +119,6 @@ public class MouseController : MonoBehaviour
         // End Drag
         if (Input.GetMouseButtonUp(0))
         {
-
             // Loop through all the tiles
             for (int x = start_x; x <= end_x; x++)
             {
@@ -133,6 +133,7 @@ public class MouseController : MonoBehaviour
                             // Create the Furniture and assign it to the tile
 
                             // FIXME: Right now, we're just going to assume walls.
+                            
                             WorldController.Instance.World.PlaceFurniture( buildModeObjectType, t );
 
 
@@ -164,10 +165,10 @@ public class MouseController : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3f, 25f);
     }
 
-    public void SetMode_BuildGrass()
+    public void SetMode_BuildFloor()
     {
         buildModeIsObjects = false;
-        buildModeTile = TileType.Grass;
+        buildModeTile = TileType.Floor;
     }
 
     public void SetMode_BuildWater()

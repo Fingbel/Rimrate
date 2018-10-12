@@ -6,7 +6,7 @@ using System;
 // the terrain type. For us, we only need to differentiate between empty space
 // and floor (a.k.a. the station structure/scaffold). Walls/Doors/etc... will be
 // furniture sitting on top of the floor.
-public enum TileType { Empty, Grass, Water };
+public enum TileType { Empty, Floor, Water };
 
 public class Tile
 {
@@ -21,8 +21,8 @@ public class Tile
             _type = value;
             // Call the callback and let things know we've changed.
 
-            if (cbTileTypeChanged != null && oldType != _type)
-                cbTileTypeChanged(this);
+            if (cbTileChanged != null && oldType != _type)
+                cbTileChanged(this);
         }
     }
 
@@ -38,7 +38,7 @@ public class Tile
     public int Y { get; protected set; }
 
     // The function we callback any time our type changes
-    Action<Tile> cbTileTypeChanged;
+    Action<Tile> cbTileChanged;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Tile"/> class.
@@ -58,7 +58,7 @@ public class Tile
     /// </summary>
     public void RegisterTileTypeChangedCallback(Action<Tile> callback)
     {
-        cbTileTypeChanged += callback;
+        cbTileChanged += callback;
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class Tile
     /// </summary>
     public void UnregisterTileTypeChangedCallback(Action<Tile> callback)
     {
-        cbTileTypeChanged -= callback;
+        cbTileChanged -= callback;
     }
 
     public bool PlaceFurniture(Furniture objInstance)
