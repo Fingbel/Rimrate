@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 4e3d8bedab2dd0d4cb1cf396f3d8bc39
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - waterSprite: {instanceID: 0}
+  - grassSprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

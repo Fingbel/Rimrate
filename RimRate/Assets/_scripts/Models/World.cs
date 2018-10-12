@@ -19,6 +19,9 @@ public class World
     Action<Furniture> cbFurnitureCreated;
     Action<Tile> cbTileChanged;
 
+    //FIXME : Most likely will be replaced with a dedicated class for managing job queueS
+    public Queue<Job> jobQueue;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="World"/> class.
     /// </summary>
@@ -26,6 +29,7 @@ public class World
     /// <param name="height">Height in tiles.</param>
     public World(int width = 100, int height = 100) //FIXME : Hardcorded
     {
+        jobQueue = new Queue<Job>();
         Width = width;
         Height = height;
 
@@ -40,7 +44,7 @@ public class World
             }
         }
 
-        Debug.Log("World created with " + (Width * Height) + " tiles.");
+        Debug.Log("world created with " + (Width * Height) + " tiles.");
 
         CreateFurniturePrototypes();
     }
@@ -120,5 +124,11 @@ public class World
         if (cbTileChanged == null)
             return;
         cbTileChanged(t);
+    }
+
+    public bool IsFurniturePlacementValid (string furnitureType, Tile t)
+    {
+        return furniturePrototypes[furnitureType].IsValidPosition(t);
+        
     }
 }

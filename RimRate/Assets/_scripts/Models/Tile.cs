@@ -32,6 +32,8 @@ public class Tile
     // Furniture is something like a wall, door, or sofa.
     public Furniture furniture { get; protected set; }
 
+    public Job pendingFurnitureJob;
+
     // We need to know the context in which we exist. Probably. Maybe.
     public World world { get; protected set; }
     public int X { get; protected set; }
@@ -43,7 +45,7 @@ public class Tile
     /// <summary>
     /// Initializes a new instance of the <see cref="Tile"/> class.
     /// </summary>
-    /// <param name="world">A World instance.</param>
+    /// <param name="world">A world instance.</param>
     /// <param name="x">The x coordinate.</param>
     /// <param name="y">The y coordinate.</param>
     public Tile(World world, int x, int y)
