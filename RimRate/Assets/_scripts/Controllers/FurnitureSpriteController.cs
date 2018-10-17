@@ -27,7 +27,7 @@ public class FurnitureSpriteController : MonoBehaviour
     {
         furnitureSprites = new Dictionary<string, Sprite>();
         Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/Furnitures/");
-        Debug.Log("LOADED RESSOURCES:");
+        Debug.Log("DONE LOADED RESSOURCES : " + sprites.Length +" furnitures.");
         foreach (Sprite s in sprites)
         {
             //Debug.Log(s);
