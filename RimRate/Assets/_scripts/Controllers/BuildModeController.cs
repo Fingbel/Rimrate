@@ -8,6 +8,13 @@ public class BuildModeController : MonoBehaviour
     TileType buildModeTile = TileType.Floor;
     string buildModeObjectType;
 
+    //DEBUG
+    public void DoPathFindingTest()
+    {
+        WorldController.Instance.world.SetupPathFindingDebug();
+
+
+    }
 
     public void SetMode_BuildFloor()
     {

@@ -13,7 +13,7 @@ public class Job {
     Action<Job> cbJobCancel;
 
     //Initialisation de la classe Job
-    public Job (Tile tile,string jobObjectType, Action<Job> cbJobComplete, float jobTime = 1f)
+    public Job (Tile tile,string jobObjectType, Action<Job> cbJobComplete, float jobTime =0.1f)
     {
         this.tile = tile;
         this.jobObjectType = jobObjectType;
@@ -53,7 +53,7 @@ public class Job {
         }
     }
     //Fonction d'annulation du travail
-    public void CancelJob(float workTime)
+    public void CancelJob()
     {
             if (cbJobCancel != null)
             cbJobCancel(this);

@@ -17,13 +17,17 @@ public class CharacterSpriteController : MonoBehaviour {
 
         // Instantiate ours dictionary that tracks which GameObject is rendering which Tile data.
         characterGameObjectMap = new Dictionary<Character, GameObject>();
-
-        
         world.RegisterCharacterCreated(OnCharacterCreated);
 
+
+
         //DEBUG 
-        Character c = world.CreateCharater(world.GetTileAt(world.Width / 2,world.Height / 2));
-        //c.SetDestination(world.GetTileAt(world.Width / 2 + 5, world.Height / 2 ));
+        world.CreateCharater(world.GetTileAt(world.Width / 2,world.Height / 2));
+        //world.CreateCharater(world.GetTileAt(world.Width / 2+1, world.Height / 2));
+        //world.CreateCharater(world.GetTileAt(world.Width / 2-1, world.Height / 2));
+
+
+
     }
 
     void LoadSprites()

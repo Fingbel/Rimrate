@@ -9,7 +9,7 @@ public class Furniture
 
     public Tile tile { get; protected set; }
     public string objectType { get; protected set; }
-    float movementCost;
+    public float movementCost { get; protected set; }
     int width;
     int height;
     public bool linksToNeighbour { get; protected set; }

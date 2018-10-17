@@ -21,7 +21,7 @@ public class FurnitureSpriteController : MonoBehaviour
 
         // Instantiate ours dictionary that tracks which GameObject is rendering which Tile data.
         furnitureGameObjectMap = new Dictionary<Furniture, GameObject>();     
-        world.RegisterFurnitureCreated(OnFurnitureCreated);
+        
     }
 
     //fonction de chargement des ressources
@@ -63,8 +63,7 @@ public class FurnitureSpriteController : MonoBehaviour
     }
 
     void OnFurnitureChanged(Furniture furn)
-    {
-        
+    {     
         //Update des gfx des furnitures
         if (furnitureGameObjectMap.ContainsKey(furn) == false)
         {
@@ -86,7 +85,7 @@ public class FurnitureSpriteController : MonoBehaviour
 
         int x = obj.tile.X;
         int y = obj.tile.Y;
-        //CHECK FOR NEIGBOUR HERE CLOCKWISE //FIXME: RENAME SPRITE
+        //CHECK FOR NEIGBOUR HERE CLOCKWISE 
         Tile t;
         t = world.GetTileAt(x, y + 1);
         if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)

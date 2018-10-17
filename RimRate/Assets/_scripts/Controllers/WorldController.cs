@@ -20,10 +20,10 @@ public class WorldController : MonoBehaviour
         }
         Instance = this;
 
-        // Create a world with Empty tiles
+        // Hello World !
         world = new World();
         
-    //center the camera
+    //Centrer la camera
     Camera.main.transform.position = new Vector3(world.Width / 2, world.Width / 2, Camera.main.transform.position.z);
     }
 

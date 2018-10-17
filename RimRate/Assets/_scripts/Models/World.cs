@@ -9,6 +9,9 @@ public class World
     Tile[,] tiles;
     List<Character> characters;
 
+    //Le graphe de pathfinding
+    public Path_TileGraph tileGraph;
+
     Dictionary<string, Furniture> furniturePrototypes;
 
     //La largeur en tile
@@ -86,9 +89,9 @@ public class World
     /// Fonction pour récupérer la tile aux coordonnées globale x et y
     public Tile GetTileAt(int x, int y)
     {
-        if (x > Width || x < 0 || y > Height || y < 0)
+        if (x >= Width || x < 0 || y >= Height || y < 0)
         {
-            Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
+            //Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
             return null;
         }
         return tiles[x, y];
@@ -110,6 +113,8 @@ public class World
         if(cbFurnitureCreated != null)
         {
             cbFurnitureCreated(obj);
+            InvalidateTileGraph();
+
         }
     }
 
@@ -142,12 +147,19 @@ public class World
         cbCharacterCreated -= callbackfunc;
     }
     
-
+    //Appeler quand n'importe quel tile change
     void OntileChanged (Tile t)
     {
         if (cbTileChanged == null)
             return;
         cbTileChanged(t);
+        InvalidateTileGraph();
+    }
+
+    //appeler pour détruire le graphe de navigation (changement de tile/furniture/etc)
+    public void InvalidateTileGraph()
+    {
+        tileGraph = null;
     }
 
     //fonctions de vérifications de la validité de l'emplacement
@@ -165,5 +177,26 @@ public class World
         }
 
         return furniturePrototypes[objectType];
+    }
+
+    public void SetupPathFindingDebug()
+    {
+        int l = (Width / 2) - 5;
+        int b = (Height / 2) - 5;
+        for (int x = l-5; x < l+15; x++)
+        {
+            for (int y = b-5; y < b+15; y++)
+            {
+                tiles[x, y].Type = TileType.Floor;
+
+                if(x==l || x == (l+9)|| y == b || y == (b + 9))
+                {
+                    if(x!=(l+9) && y != (b + 4))
+                    {
+                        PlaceFurniture("wall", tiles[x,y]);
+                    }
+                }
+            }
+        }
     }
 }
