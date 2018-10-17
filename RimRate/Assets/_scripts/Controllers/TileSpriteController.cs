@@ -19,7 +19,7 @@ public class TileSpriteController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        // Instantiate ours dictionary that tracks which GameObject is rendering which Tile data.
+        // Instantiate our dictionary that tracks which GameObject is rendering which Tile data.
         tileGameObjectMap = new Dictionary<Tile, GameObject>();
 
         // Create a GameObject for each of our tiles, so they show visually. (and redunt reduntantly)
@@ -51,31 +51,7 @@ public class TileSpriteController : MonoBehaviour
         world.RegisterTileChanged(OnTileChanged);
     }
 
-    // THIS IS AN EXAMPLE -- NOT CURRENTLY USED
-    void DestroyAllTileGameObjects()
-    {
-        // This function might get called when we are changing floors/levels.
-        // We need to destroy all visual **GameObjects** -- but not the actual tile data!
-
-        while (tileGameObjectMap.Count > 0)
-        {
-            Tile tile_data = tileGameObjectMap.Keys.First();
-            GameObject tile_go = tileGameObjectMap[tile_data];
-
-            // Remove the pair from the map
-            tileGameObjectMap.Remove(tile_data);
-
-            // Unregister the callback!
-            tile_data.UnregisterTileTypeChangedCallback(OnTileChanged);
-
-            // Destroy the visual GameObject
-            Destroy(tile_go);
-        }
-
-        // Presumably, after this function gets called, we'd be calling another
-        // function to build all the GameObjects for the tiles on the new floor/level
-    }
-
+    
     // This function should be called automatically whenever a tile's type gets changed.
     void OnTileChanged(Tile tile_data)
     {

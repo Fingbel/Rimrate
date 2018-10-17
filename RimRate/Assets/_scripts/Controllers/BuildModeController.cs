@@ -38,8 +38,9 @@ public class BuildModeController : MonoBehaviour
     public void DoBuild(Tile t)
     {
         if (buildModeIsObjects == true)
+            //on est en mode de construction d'objets
         {
-            //Job Queueing
+
             string furnitureType = buildModeObjectType;
             if (WorldController.Instance.world.IsFurniturePlacementValid(furnitureType, t) && t.pendingFurnitureJob == null)
             {
@@ -49,8 +50,6 @@ public class BuildModeController : MonoBehaviour
                     t.pendingFurnitureJob = null;
                 }
                 );
-                 
-
                 t.pendingFurnitureJob = j;
                 j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingFurnitureJob = null; });
 
@@ -60,7 +59,7 @@ public class BuildModeController : MonoBehaviour
         }
         else
         {
-            // We are in tile-changing mode.
+            // On est en mode de changement de tile
             t.Type = buildModeTile;
         }
     }

@@ -18,6 +18,7 @@ public class Job {
         this.tile = tile;
         this.jobObjectType = jobObjectType;
         this.cbJobComplete += cbJobComplete;
+        this.jobTime = jobTime;
     }
 
     //Les fonctions d'enregistrement / désenregistrements

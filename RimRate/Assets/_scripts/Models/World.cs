@@ -7,6 +7,7 @@ public class World
 
     // Un tableau a deux dimensions pour contenir nos tiles
     Tile[,] tiles;
+    List<Character> characters;
 
     Dictionary<string, Furniture> furniturePrototypes;
 
@@ -18,6 +19,8 @@ public class World
 
     Action<Furniture> cbFurnitureCreated;
     Action<Tile> cbTileChanged;
+    Action<Character> cbCharacterCreated;
+
 
     //FIXME : Most likely will be replaced with a dedicated class for managing job queueS
     public JobQueue jobQueue;
@@ -43,6 +46,26 @@ public class World
         Debug.Log("world created with " + (Width * Height) + " tiles.");
 
         CreateFurniturePrototypes();
+        characters = new List<Character>();
+        
+    }
+
+    public void Update(float deltaTime)
+    {
+        foreach(Character c in characters)
+        {
+            c.Update(deltaTime);
+        }
+    }
+
+    public Character CreateCharater(Tile t)
+    {
+        Character c = new Character(t);
+        characters.Add(c);
+        if(cbCharacterCreated != null)
+            cbCharacterCreated(c);
+        return c;
+
     }
 
     void CreateFurniturePrototypes()
@@ -109,6 +132,16 @@ public class World
     {
         cbTileChanged -= callbackfunc;
     }
+
+    public void RegisterCharacterCreated(Action<Character> callbackfunc)
+    {
+        cbCharacterCreated += callbackfunc;
+    }
+    public void UnregisterCharacterCreated(Action<Character> callbackfunc)
+    {
+        cbCharacterCreated -= callbackfunc;
+    }
+    
 
     void OntileChanged (Tile t)
     {

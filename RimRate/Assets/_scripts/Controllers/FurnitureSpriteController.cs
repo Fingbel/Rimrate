@@ -23,6 +23,8 @@ public class FurnitureSpriteController : MonoBehaviour
         furnitureGameObjectMap = new Dictionary<Furniture, GameObject>();     
         world.RegisterFurnitureCreated(OnFurnitureCreated);
     }
+
+    //fonction de chargement des ressources
     void LoadSprites()
     {
         furnitureSprites = new Dictionary<string, Sprite>();
@@ -30,7 +32,6 @@ public class FurnitureSpriteController : MonoBehaviour
         Debug.Log("DONE LOADED RESSOURCES : " + sprites.Length +" furnitures.");
         foreach (Sprite s in sprites)
         {
-            //Debug.Log(s);
             furnitureSprites[s.name] = s;
         }
     }
@@ -43,7 +44,11 @@ public class FurnitureSpriteController : MonoBehaviour
         GameObject furn_go = new GameObject();
 
         // Add our tile/GO pair to the dictionary.
-        furnitureGameObjectMap.Add(furn, furn_go);
+        if (!furnitureGameObjectMap.ContainsKey(furn))
+        {
+            furnitureGameObjectMap.Add(furn, furn_go);
+        }
+        
 
         furn_go.name = furn.objectType +"_"+ furn.tile.X +"_" + furn.tile.Y;
         furn_go.transform.position = new Vector3(furn.tile.X, furn.tile.Y, 0);

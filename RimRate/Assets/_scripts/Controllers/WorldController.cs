@@ -25,13 +25,14 @@ public class WorldController : MonoBehaviour
         
     //center the camera
     Camera.main.transform.position = new Vector3(world.Width / 2, world.Width / 2, Camera.main.transform.position.z);
-    } 
-    
-    /// <summary>
-    /// Gets the tile at the unity-space coordinates
-    /// </summary>
-    /// <returns>The tile at world coordinate.</returns>
-    /// <param name="coord">Unity world-Space coordinates.</param>
+    }
+
+    void Update()
+    {
+        //TODO : Gestion de l'écoulement du temps du jeu !
+        world.Update(Time.deltaTime);
+    }
+
     public Tile GetTileAtWorldCoord(Vector3 coord)
     {
         int x = Mathf.FloorToInt(coord.x);

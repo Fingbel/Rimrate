@@ -47,6 +47,12 @@ TagManager:
   - name: furniture
     uniqueID: 651607247
     locked: 0
+  - name: job
+    uniqueID: 589075087
+    locked: 0
+  - name: character
+    uniqueID: 3051010541
+    locked: 0
   - name: UI
     uniqueID: 649392231
     locked: 0

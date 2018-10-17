@@ -42,7 +42,7 @@ public class Tile
         this.Y = y;
     }
 
-    /// Enregistre la fonction a appeléquand le tileType a changé.
+    /// Enregistre la fonction a appelé quand le tileType a changé.
 
     public void RegisterTileTypeChangedCallback(Action<Tile> callback)
     {
@@ -76,6 +76,29 @@ public class Tile
 
         furniture = objInstance;
         return true;
+    }
+    
+    //nous dis si deux tiles sont adjacentes
+    public bool IsNeighbour(Tile tile, bool diagOkay = false)
+    {
+        if(this.X == tile.X && (this.Y == tile.Y + 1 || this.Y == tile.Y - 1))
+            return true;
+
+        if(this.Y == tile.Y && (this.X == tile.X + 1 || this.X == tile.X - 1))
+            return true;
+
+        if (diagOkay)
+        {
+            if (this.X == tile.X + 1 && (this.Y == tile.Y + 1 || this.Y == tile.Y - 1))
+                return true;
+
+            if (this.X == tile.X - 1 && (this.Y == tile.Y + 1 || this.Y == tile.Y - 1))
+                return true;
+
+        }
+
+
+        return false;
     }
 
 }

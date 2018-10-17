@@ -16,10 +16,11 @@ public class JobSpriteController : MonoBehaviour {
         WorldController.Instance.world.jobQueue.RegisterJobCreationCallBack(OnJobCreated);
 	}
 
+
+    //Fonction appelé a chaque création de job
     void OnJobCreated(Job job)
     {
         GameObject job_go = new GameObject();
-
         // Add our tile/GO pair to the dictionary.
         jobGameObjectMap.Add(job, job_go);
 
@@ -30,13 +31,15 @@ public class JobSpriteController : MonoBehaviour {
 
         SpriteRenderer sr = job_go.AddComponent<SpriteRenderer>();
         sr.sprite = fsc.GetSpriteForFurniture(job.jobObjectType);
-        sr.sortingLayerName = "UI";
+        sr.sortingLayerName = "job";
         sr.color = new Color(1f, 1f, 1f, 0.5f);
 
+        //enregistrement des callbacks
         job.RegisterJobCompleteCallback(OnJobEnded);
         job.RegisterJobCancelCallback(OnJobEnded);
     }
 
+    //Fonction appelé a chaque fin de job
     void OnJobEnded(Job job)
     {
         GameObject job_go = jobGameObjectMap[job];
