@@ -12,8 +12,6 @@ public class BuildModeController : MonoBehaviour
     public void DoPathFindingTest()
     {
         WorldController.Instance.world.SetupPathFindingDebug();
-
-
     }
 
     public void SetMode_BuildFloor()

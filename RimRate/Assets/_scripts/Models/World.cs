@@ -8,6 +8,8 @@ using System.Xml;
 
 public class World : IXmlSerializable
 {
+
+
     // Un tableau a deux dimensions pour contenir nos tiles
     Tile[,] tiles;
     public List<Character> characters;
@@ -71,6 +73,11 @@ public class World : IXmlSerializable
         {
             c.Update(deltaTime);
         }
+
+        foreach (Furniture f in furnitures)
+        {
+            f.Update(deltaTime);
+        }
     }
 
     public Character CreateCharater(Tile t)
@@ -88,7 +95,7 @@ public class World : IXmlSerializable
         furniturePrototypes = new Dictionary<string, Furniture>();
 
         furniturePrototypes.Add("wall",
-            Furniture.CreatePrototype(
+            new Furniture(
                                 "wall",
                                 0,  // Impassable
                                 1,  // Width
@@ -96,6 +103,18 @@ public class World : IXmlSerializable
                                 true //link to neighbours
                             )
         );
+
+        furniturePrototypes.Add("door",
+            new Furniture(
+                                "door",
+                                0,  // Impassable
+                                1,  // Width
+                                1,  // Height
+                                true //link to neighbours
+                            )
+        );
+        furniturePrototypes["door"].furnParameters["openess"] = 0;
+        furniturePrototypes["door"].updateActions += FurnitureActions.Door_UpdateAction;
     }
 
     /// Fonction pour récupérer la tile aux coordonnées globale x et y
