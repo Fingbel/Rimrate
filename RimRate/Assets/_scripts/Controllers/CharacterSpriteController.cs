@@ -19,15 +19,10 @@ public class CharacterSpriteController : MonoBehaviour {
         characterGameObjectMap = new Dictionary<Character, GameObject>();
         world.RegisterCharacterCreated(OnCharacterCreated);
 
-
-
-        //DEBUG 
-        world.CreateCharater(world.GetTileAt(world.Width / 2,world.Height / 2));
-        //world.CreateCharater(world.GetTileAt(world.Width / 2+1, world.Height / 2));
-        //world.CreateCharater(world.GetTileAt(world.Width / 2-1, world.Height / 2));
-
-
-
+        foreach(Character c in world.characters)
+        {
+            OnCharacterCreated(c);
+        }
     }
 
     void LoadSprites()

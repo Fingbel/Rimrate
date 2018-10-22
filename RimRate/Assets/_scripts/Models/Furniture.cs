@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Xml.Serialization;
+using System.Xml.Schema;
+using System.Xml;
 
 // Furniture are things like walls, doors, and furniture (e.g. a sofa)
 
-public class Furniture
+public class Furniture : IXmlSerializable
 {
 
     public Tile tile { get; protected set; }
@@ -19,7 +22,7 @@ public class Furniture
     // TODO: Implement larger objects
     // TODO: Implement object rotation
 
-    protected Furniture()
+    public Furniture()
     {
 
     }
@@ -65,23 +68,23 @@ public class Furniture
             int x = tile.X;
             int y = tile.Y;
             t = tile.world.GetTileAt(x, y + 1);
-            if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+            if (t != null && t.furniture != null && t.furniture.cbOnChanged != null && t.furniture.objectType == obj.objectType)
             {
                 t.furniture.cbOnChanged(t.furniture);
             }
             t = tile.world.GetTileAt(x + 1, y);
-            if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+            if (t != null && t.furniture != null && t.furniture.cbOnChanged != null && t.furniture.objectType == obj.objectType)
             {
                 t.furniture.cbOnChanged(t.furniture);
             }
             t = tile.world.GetTileAt(x, y - 1);
-            if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+            if (t != null && t.furniture != null && t.furniture.cbOnChanged != null && t.furniture.objectType == obj.objectType)
             {
 
                 t.furniture.cbOnChanged(t.furniture);
             }
             t = tile.world.GetTileAt(x - 1, y);
-            if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+            if (t != null && t.furniture != null && t.furniture.cbOnChanged != null && t.furniture.objectType == obj.objectType)
             {
                 t.furniture.cbOnChanged(t.furniture);
             }
@@ -134,5 +137,29 @@ public class Furniture
 
          //TODO : s'assurer qu'il y a un mur en N/S ou en E/W
         return true;
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///
+    ///                                 SAVING & LOADING
+    /// 
+    /// 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public XmlSchema GetSchema()
+    {
+        return null;
+    }
+    public void WriteXml(XmlWriter writer)
+    {
+        writer.WriteAttributeString("X", tile.X.ToString());
+        writer.WriteAttributeString("Y", tile.Y.ToString());
+
+        writer.WriteAttributeString("objectType", objectType);
+        writer.WriteAttributeString("movementCost", movementCost.ToString());
+
+    }
+    public void ReadXml(XmlReader reader)
+    {
+        movementCost = int.Parse(reader.GetAttribute("movementCost"));
     }
 }

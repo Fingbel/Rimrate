@@ -2,6 +2,9 @@
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System.Xml.Serialization;
+using System.IO;
 
 public class WorldController : MonoBehaviour
 {
@@ -10,7 +13,8 @@ public class WorldController : MonoBehaviour
     // The world and tile data
     public World world { get; protected set; }
 
-    
+    static bool loadWorld = false;
+
     // Use this for initialization
     void OnEnable()
     {
@@ -20,11 +24,15 @@ public class WorldController : MonoBehaviour
         }
         Instance = this;
 
-        // Hello World !
-        world = new World();
-        
-    //Centrer la camera
-    Camera.main.transform.position = new Vector3(world.Width / 2, world.Width / 2, Camera.main.transform.position.z);
+        if (loadWorld)
+        {
+            loadWorld = false;
+            CreateWorldFromSaveFile();
+        }
+        else
+        {
+            CreateEmptyWorld();
+        }
     }
 
     void Update()
@@ -40,4 +48,55 @@ public class WorldController : MonoBehaviour
 
         return world.GetTileAt(x, y);
     } 
+
+    public void NewWorld()
+    {
+        Debug.Log("New World Button Clicked");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void SaveWorld()
+    {
+        XmlSerializer serializer = new XmlSerializer(typeof(World));
+        TextWriter writer = new StringWriter();
+
+        serializer.Serialize(writer, world);
+        writer.Close();
+
+        Debug.Log(writer.ToString());
+
+        PlayerPrefs.SetString("SaveGame00",writer.ToString());
+
+    }
+
+    public void LoadWorld()
+    {
+        //TODO Load
+        loadWorld = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void CreateEmptyWorld()
+    {
+        Debug.Log("CreateEmptyWorld");
+        // Hello World !
+        world = new World(100,100);
+
+        //Centrer la camera
+        Camera.main.transform.position = new Vector3(world.Width / 2, world.Width / 2, Camera.main.transform.position.z);
+    }
+
+    void CreateWorldFromSaveFile()
+    {
+        Debug.Log("CreateWorldFromSaveFile");
+        // Hello Again World ! (from save)
+        XmlSerializer serializer = new XmlSerializer(typeof(World));
+        TextReader reader = new StringReader(PlayerPrefs.GetString("SaveGame00"));
+
+        world = (World)serializer.Deserialize(reader);
+        reader.Close();
+
+        //Centrer la camera
+        Camera.main.transform.position = new Vector3(world.Width / 2, world.Width / 2, Camera.main.transform.position.z);
+    }
 }

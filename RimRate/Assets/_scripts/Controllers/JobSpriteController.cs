@@ -21,6 +21,13 @@ public class JobSpriteController : MonoBehaviour {
     void OnJobCreated(Job job)
     {
         GameObject job_go = new GameObject();
+
+        if (jobGameObjectMap.ContainsKey(job))
+        {
+            Debug.LogError("Job already exist");
+            return;
+        }
+
         // Add our tile/GO pair to the dictionary.
         jobGameObjectMap.Add(job, job_go);
 
@@ -28,8 +35,7 @@ public class JobSpriteController : MonoBehaviour {
         job_go.transform.position = new Vector3(job.tile.X, job.tile.Y, 0);
         job_go.transform.SetParent(this.transform, true);
 
-
-        SpriteRenderer sr = job_go.AddComponent<SpriteRenderer>();
+        SpriteRenderer sr = job_go.AddComponent<SpriteRenderer>();      
         sr.sprite = fsc.GetSpriteForFurniture(job.jobObjectType);
         sr.sortingLayerName = "job";
         sr.color = new Color(1f, 1f, 1f, 0.5f);

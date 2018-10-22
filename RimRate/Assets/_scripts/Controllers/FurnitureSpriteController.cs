@@ -17,11 +17,20 @@ public class FurnitureSpriteController : MonoBehaviour
     void Start()
     {
         LoadSprites();
-        world.RegisterFurnitureCreated(OnFurnitureCreated);
+        
 
         // Instantiate ours dictionary that tracks which GameObject is rendering which Tile data.
-        furnitureGameObjectMap = new Dictionary<Furniture, GameObject>();     
-        
+        furnitureGameObjectMap = new Dictionary<Furniture, GameObject>();
+
+        //Register 
+        world.RegisterFurnitureCreated(OnFurnitureCreated);
+
+        //Loop a travers toutes les furniture préchargé et call le callback
+        foreach(Furniture furn in world.furnitures)
+        {
+            OnFurnitureCreated(furn);
+        }
+
     }
 
     //fonction de chargement des ressources

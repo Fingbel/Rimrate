@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Xml.Serialization;
+using System.Xml.Schema;
+using System.Xml;
 
 //TileType est le Type de la case 
 public enum TileType { Empty, Floor, Water };
 
-public class Tile
+public class Tile : IXmlSerializable
 {
     private TileType _type = TileType.Empty;
 
@@ -17,14 +20,14 @@ public class Tile
         {
             TileType oldType = _type;
             _type = value;
-            
+
             if (cbTileChanged != null && oldType != _type)
                 cbTileChanged(this);
         }
     }
 
     //Initialisation des variables
-    public Inventory inventory{ get; protected set; }
+    public Inventory inventory { get; protected set; }
     public Furniture furniture { get; protected set; }
     public Job pendingFurnitureJob;
     public World world { get; protected set; }
@@ -89,7 +92,7 @@ public class Tile
         furniture = objInstance;
         return true;
     }
-    
+
     //nous dis si deux tiles sont adjacentes
     public bool IsNeighbour(Tile tile, bool diagOkay = false)
     {
@@ -99,10 +102,16 @@ public class Tile
             ;
     }
 
-    public Tile[] GetNeighbours(bool diagOkay = false)
+    /// <summary>
+    /// Get the neigbours
+    /// </summary>
+    /// <param name="diagOkay">Is diagonal ok ?</param>
+    /// <param name="squeezingOkay">Is clipping corner ok ?</param>
+    /// <returns></returns>
+    public Tile[] GetNeighbours(bool diagOkay = false, bool clippingOkay = true)
     {
         Tile[] ns;
-        if(diagOkay == false)
+        if (diagOkay == false)
         {
             ns = new Tile[4]; //Ordre des tiles : N E S W
         }
@@ -113,25 +122,47 @@ public class Tile
         Tile n;
         n = world.GetTileAt(X, Y + 1);
         ns[0] = n;
-        n = world.GetTileAt(X+1, Y);
+        n = world.GetTileAt(X + 1, Y);
         ns[1] = n;
         n = world.GetTileAt(X, Y - 1);
         ns[2] = n;
-        n = world.GetTileAt(X-1, Y );
+        n = world.GetTileAt(X - 1, Y);
         ns[3] = n;
 
         if (diagOkay == true)
         {
-            n = world.GetTileAt(X+1, Y + 1);
+
+            n = world.GetTileAt(X + 1, Y + 1);
             ns[4] = n;
-            n = world.GetTileAt(X+1, Y-1);
+            n = world.GetTileAt(X + 1, Y - 1);
             ns[5] = n;
-            n = world.GetTileAt(X-1, Y - 1);
+            n = world.GetTileAt(X - 1, Y - 1);
             ns[6] = n;
-            n = world.GetTileAt(X - 1, Y+1);
+            n = world.GetTileAt(X - 1, Y + 1);
             ns[7] = n;
         }
         return ns;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///
+    ///                                 SAVING & LOADING
+    /// 
+    /// 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public XmlSchema GetSchema()
+    {
+        return null;
+    }
+    public void WriteXml(XmlWriter writer)
+    {
+        writer.WriteAttributeString("X", X.ToString());
+        writer.WriteAttributeString("Y", Y.ToString());
+        writer.WriteAttributeString("Type", ((int)Type).ToString() );
+    }
+    public void ReadXml(XmlReader reader)
+    {
+        Type = (TileType)int.Parse(reader.GetAttribute("Type"));
+    }
 }

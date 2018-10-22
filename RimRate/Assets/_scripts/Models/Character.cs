@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Xml.Serialization;
+using System.Xml.Schema;
+using System.Xml;
 
-public class Character
+public class Character : IXmlSerializable
 {
     public float X
     {
@@ -36,6 +39,12 @@ public class Character
     Action<Character> cbCharacterChanged;
 
     Job myJob;
+
+    public Character()
+    {
+
+    }
+
 
     public Character(Tile tile)
     {
@@ -115,16 +124,6 @@ public class Character
             }
         }
 
-        /*		if(pathAStar.Length() == 1) {
-                    return;
-                }
-        */
-        // At this point we should have a valid nextTile to move to.
-
-        // What's the total distance from point A to point B?
-        // We are going to use Euclidean distance FOR NOW...
-        // But when we do the pathfinding system, we'll likely
-        // switch to something like Manhattan or Chebyshev distance
         float distToTravel = Mathf.Sqrt(
             Mathf.Pow(currTile.X - nextTile.X, 2) +
             Mathf.Pow(currTile.Y - nextTile.Y, 2)
@@ -142,8 +141,7 @@ public class Character
 
         if (movementPercentage >= 1)
         {
-            // We have reached our destination
-
+           
             // TODO: Get the next tile from the pathfinding system.
             //       If there are no more tiles, then we have TRULY
             //       reached our destination.
@@ -200,5 +198,28 @@ public class Character
         }
 
         myJob = null;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///
+    ///                                 SAVING & LOADING
+    /// 
+    /// 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public XmlSchema GetSchema()
+    {
+        return null;
+    }
+    public void WriteXml(XmlWriter writer)
+    {
+        writer.WriteAttributeString("X", currTile.X.ToString());
+        writer.WriteAttributeString("Y", currTile.Y.ToString());
+        
+    }
+    public void ReadXml(XmlReader reader)
+    {
+        
     }
 }

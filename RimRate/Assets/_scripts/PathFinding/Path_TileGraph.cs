@@ -38,11 +38,16 @@ public class Path_TileGraph{
             List<Path_Edge<Tile>> edges = new List<Path_Edge<Tile>>();
 
             //récupération de la liste des voisins, et si le voisin est traversable, création d'un edge
-            Tile[] neighbours = t.GetNeighbours(true);
+            Tile[] neighbours = t.GetNeighbours(true,false);
             for (int i = 0; i < neighbours.Length; i++)
             {
                 if(neighbours[i] != null && neighbours[i].movementCost > 0)
                 {
+                    if (isClippingCorner(t, neighbours[i]))
+                    {
+                        continue; //skip sans edge
+                    }
+
                     Path_Edge<Tile> e = new Path_Edge<Tile>();
                     e.cost = neighbours[i].movementCost;
                     e.node = nodes[neighbours[i]];
@@ -56,6 +61,25 @@ public class Path_TileGraph{
         }
         Debug.Log("Path_TileGraph: Created " + edgeCount + " edges");
 
+    }
+
+    bool isClippingCorner(Tile curr, Tile neigh)
+    {
+        int dX = (curr.X - neigh.X);
+        int dY = (curr.Y - neigh.Y);
+
+        if (Mathf.Abs(dX) + Mathf.Abs(dY) ==2) //check de la diagonale
+        {          
+            if(curr.world.GetTileAt(curr.X - dX,curr.Y).movementCost == 0)
+            {
+                return true;
+            }
+            if (curr.world.GetTileAt(curr.X, curr.Y - dY).movementCost == 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
