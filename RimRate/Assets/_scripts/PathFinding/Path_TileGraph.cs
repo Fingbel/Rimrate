@@ -12,7 +12,7 @@ public class Path_TileGraph{
 
     public Path_TileGraph(World world)
     {
-        Debug.Log("Path_TileGraph");
+        //Debug.Log("Path_TileGraph");
 
         nodes = new Dictionary<Tile, Path_Node<Tile>>();
         //loop a travers toutes les tiles
@@ -26,7 +26,7 @@ public class Path_TileGraph{
               
             }
         }
-        Debug.Log("Path_TileGraph: Created " + nodes.Count +" nodes");
+        //Debug.Log("Path_TileGraph: Created " + nodes.Count +" nodes");
         //pour chaque tile crée une node
         //tri des nodes avec des tiles vide ou impassable (mur)
         //reloop chaque node et créer les connexions pour les voisins
@@ -59,7 +59,7 @@ public class Path_TileGraph{
             }
             n.edges = edges.ToArray();
         }
-        Debug.Log("Path_TileGraph: Created " + edgeCount + " edges");
+       // Debug.Log("Path_TileGraph: Created " + edgeCount + " edges");
 
     }
 

@@ -51,21 +51,37 @@ public class FurnitureSpriteController : MonoBehaviour
         //create a visual GameObject linked to this data
         // This creates a new GameObject and adds it to our scene.
         GameObject furn_go = new GameObject();
+        SpriteRenderer sr = furn_go.AddComponent<SpriteRenderer>();
+        
 
         // Add our tile/GO pair to the dictionary.
         if (!furnitureGameObjectMap.ContainsKey(furn))
         {
             furnitureGameObjectMap.Add(furn, furn_go);
         }
-        
+
+
 
         furn_go.name = furn.objectType +"_"+ furn.tile.X +"_" + furn.tile.Y;
         furn_go.transform.position = new Vector3(furn.tile.X, furn.tile.Y, 0);
         furn_go.transform.SetParent(this.transform, true);
 
+        //FIXME : Hardcoded stuff
+        if (furn.objectType == "door")
+        {
+            Tile northTile = world.GetTileAt(furn.tile.X, furn.tile.Y + 1);
+            Tile southTile = world.GetTileAt(furn.tile.X, furn.tile.Y - 1);
+            if (northTile != null && southTile != null && northTile.furniture != null && southTile.furniture != null && northTile.furniture.objectType == "wall" && southTile.furniture.objectType == "wall")
+            {
+                furn_go.transform.rotation = Quaternion.Euler(0, 0, 90);
+                furn_go.transform.Translate(1f, 0, 0, Space.World);
+            }
+        }
 
-        furn_go.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
-        furn_go.GetComponent<SpriteRenderer>().sortingLayerName = "furniture";
+
+        sr.sprite = GetSpriteForFurniture(furn);
+        sr.sortingLayerName = "furniture";
+
         // Register our callback so that our GameObject gets updated whenever
         // the objects's type changes.
         furn.RegisterOnChangedCallback(OnFurnitureChanged);
@@ -85,43 +101,67 @@ public class FurnitureSpriteController : MonoBehaviour
 
     }
 
-    public Sprite GetSpriteForFurniture(Furniture obj){
-        if (obj.linksToNeighbour == false)
+    public Sprite GetSpriteForFurniture(Furniture furn){
+        string spriteName = furn.objectType;
+        if (furn.linksToNeighbour == false)
         {
-            return furnitureSprites[obj.objectType];
+            if (furn.objectType == "door")
+            {
+                if (furn.furnParameters["openness"] < 0.1f)
+                {
+                    spriteName = "door";
+                }
+                else if (furn.furnParameters["openness"] < 0.5f)
+                {
+                    spriteName = "door_openness_1";
+                }
+                else if (furn.furnParameters["openness"] < 0.9f)
+                {
+                    spriteName = "door_openness_2";
+                }
+                else
+                {
+                    spriteName = "door_openness_3";
+                }
+            }
+            return furnitureSprites[spriteName];
         }
-        string spriteName = obj.objectType + "_";
+        spriteName = furn.objectType + "_";
 
-        int x = obj.tile.X;
-        int y = obj.tile.Y;
+        int x = furn.tile.X;
+        int y = furn.tile.Y;
         //CHECK FOR NEIGBOUR HERE CLOCKWISE 
         Tile t;
         t = world.GetTileAt(x, y + 1);
-        if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+        if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType)
         {
             spriteName += "N";
         }
         t = world.GetTileAt(x+1, y);
-        if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+        if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType)
         {
             spriteName += "E";
         }
         t = world.GetTileAt(x, y - 1);
-        if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+        if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType)
         {
 
             spriteName += "S";
         }
         t = world.GetTileAt(x-1, y);
-        if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType)
+        if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType)
         {
             spriteName += "W";
         }
 
         if(furnitureSprites.ContainsKey(spriteName) == false) {
-            Debug.LogError("No sprite with that name" + spriteName);
+            Debug.LogError("No sprite with that name : " + spriteName);
             return null;
         }
+
+        
+
+        
         return furnitureSprites[spriteName];
     }
 

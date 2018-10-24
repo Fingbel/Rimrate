@@ -3,8 +3,11 @@ guid: 59ad058d37d30df48b1c73e72c35d548
 TextureImporter:
   fileIDToRecycleName:
     21300000: door_EW
-    21300002: door_NS
-    21300004: door_
+    21300002: door_openness_3
+    21300004: door
+    21300006: door_openness_1
+    21300008: door_openness_2
+    21300010: door_NS
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -129,15 +132,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: door_NS
+      name: door_openness_3
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
+        x: 30
+        y: 464
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -149,7 +152,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: door_
+      name: door
       rect:
         serializedVersion: 2
         x: 224
@@ -164,6 +167,66 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a8dad393206d90f41a5b29e9b216e7ca
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: door_openness_1
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 272
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9618e85dc6db0741b88af6ec3767831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: door_openness_2
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 368
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e36206c397cc444eab1d823f9be5870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: door_NS
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 464
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffdb187b9a8934649981be9ae88daf30
       vertices: []
       indices: 
       edges: []

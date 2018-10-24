@@ -8,6 +8,8 @@ using System.Xml;
 //TileType est le Type de la case 
 public enum TileType { Empty, Floor, Water };
 
+public enum Enterability { Yes,Never,Soon};
+
 public class Tile : IXmlSerializable
 {
     private TileType _type = TileType.Empty;
@@ -28,11 +30,15 @@ public class Tile : IXmlSerializable
 
     //Initialisation des variables
     public Inventory inventory { get; protected set; }
+    public Room room;
     public Furniture furniture { get; protected set; }
     public Job pendingFurnitureJob;
     public World world { get; protected set; }
     public int X { get; protected set; }
     public int Y { get; protected set; }
+
+    const float baseTileMovementCost = 1; //FIXME : Hardcoded
+
     public float movementCost
     {
         get
@@ -40,12 +46,13 @@ public class Tile : IXmlSerializable
             if (Type == TileType.Empty)
                 return 0;
             if (furniture == null)
-                return 1;
-            return 1 * furniture.movementCost;
+                return baseTileMovementCost;
+            return baseTileMovementCost * furniture.movementCost;
 
         }
     }
 
+    
     // L'action qui est appelé par le callback quand le tileType a changé
     Action<Tile> cbTileChanged;
 
@@ -63,6 +70,8 @@ public class Tile : IXmlSerializable
     {
         cbTileChanged += callback;
     }
+
+    
 
 
     /// Désenregistrement du callback
@@ -100,6 +109,20 @@ public class Tile : IXmlSerializable
             Mathf.Abs(this.X - tile.X) + Mathf.Abs(this.Y - tile.Y) == 1 ||
             (diagOkay && (Mathf.Abs(this.X - tile.X) == 1 && Mathf.Abs(this.Y - tile.Y) == 1))
             ;
+    }
+
+    public Enterability IsEnterable() //return true if you can enter the tile immediatly 
+    {
+        if (movementCost == 0)
+            return Enterability.Never;
+
+        if(furniture!=null && furniture.isEnterable != null)
+        {
+            return furniture.isEnterable(furniture);
+        }
+
+        return Enterability.Yes;
+
     }
 
     /// <summary>
@@ -144,6 +167,9 @@ public class Tile : IXmlSerializable
         return ns;
     }
 
+    
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///
     ///                                 SAVING & LOADING
@@ -165,4 +191,6 @@ public class Tile : IXmlSerializable
     {
         Type = (TileType)int.Parse(reader.GetAttribute("Type"));
     }
+
+
 }

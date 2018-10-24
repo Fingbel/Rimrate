@@ -73,12 +73,8 @@ public class Character : IXmlSerializable
 
         // Are we there yet?
         if (myJob != null && currTile == myJob.tile)
-        {
-            //if(pathAStar != null && pathAStar.Length() == 1)	{ // We are adjacent to the job site.
-            if (myJob != null)
-            {
-                myJob.DoWork(deltaTime);
-            }
+        {            
+                myJob.DoWork(deltaTime);           
         }
 
     }
@@ -113,7 +109,10 @@ public class Character : IXmlSerializable
                     pathAStar = null;
                     return;
                 }
+                //Ignore the first tile, we are in !
+                nextTile = pathAStar.Dequeue();
             }
+            
 
             // Grab the next waypoint from the pathing system!
             nextTile = pathAStar.Dequeue();
@@ -129,9 +128,21 @@ public class Character : IXmlSerializable
             Mathf.Pow(currTile.Y - nextTile.Y, 2)
         );
 
+        if(nextTile.IsEnterable() == Enterability.Never)
+        {
+            //FIXME : We should invalidate path when unwalkable furn are spawn
+            Debug.LogError("Character trying to enter an unwalkable tile");
+            nextTile = null;
+            pathAStar = null;
+            return;
+        }
+        else if(nextTile.IsEnterable() == Enterability.Soon)
+        {
+            return;
+        }
 
         // How much distance can be travel this Update?
-        float distThisFrame = speed * deltaTime;
+        float distThisFrame = speed /nextTile.movementCost * deltaTime;
 
         // How much is that in terms of percentage to our destination?
         float percThisFrame = distThisFrame / distToTravel;

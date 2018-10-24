@@ -9,68 +9,75 @@ using System.Xml;
 
 public class Furniture : IXmlSerializable
 {
-    public Dictionary<string, object> furnParameters;
+    public Dictionary<string, float> furnParameters;
     public Action<Furniture, float> updateActions;
+
+    public Func<Furniture,Enterability> isEnterable;
 
     public void Update(float deltaTime)
     {
-        if(updateActions != null)
+        if (this.updateActions != null)
         {
-            updateActions(this,deltaTime);
+            updateActions(this, deltaTime);
         }
     }
 
     public Tile tile { get; protected set; }
     public string objectType { get; protected set; }
     public float movementCost { get; protected set; }
+    public bool roomEnclosure { get; protected set; }
     int width;
     int height;
     public bool linksToNeighbour { get; protected set; }
-    Action<Furniture> cbOnChanged;
+    public Action<Furniture> cbOnChanged;
     Func<Tile, bool> funcPositionValidation;
 
     // TODO: Implement larger objects
     // TODO: Implement object rotation
 
+   
 
     //empty constructor for serialization
     public Furniture()
     {
-        furnParameters = new Dictionary<string, object>();
+        furnParameters = new Dictionary<string, float>();
 
     }
 
-    //Copy constructor
+    //Copy Constructor
     protected Furniture(Furniture other)
     {
         this.objectType = other.objectType;
         this.movementCost = other.movementCost;
+        this.roomEnclosure = other.roomEnclosure;
         this.width = other.width;
         this.height = other.height;
         this.linksToNeighbour = other.linksToNeighbour;
-        this.furnParameters = new Dictionary<string, object>(other.furnParameters);
-        if(updateActions != null)
+        this.furnParameters = new Dictionary<string, float>(other.furnParameters);
+        if(other.updateActions != null)
         {
             this.updateActions = (Action<Furniture, float>)other.updateActions.Clone();
         }
-        
+        this.isEnterable = other.isEnterable;
     }
 
+    //Virtual Clone Constructor
     virtual public Furniture Clone()
     {
         return new Furniture(this);
     }
 
     //Prototype Constructor -- 
-    public Furniture (string objectType, float movementCost = 1f, int width = 1, int height = 1, bool linksToNeighbour = false)
+    public Furniture (string objectType, float movementCost = 1f, int width = 1, int height = 1, bool linksToNeighbour = false,bool roomEnclosure = false)
     {      
         this.objectType = objectType;
         this.movementCost = movementCost;
+        this.roomEnclosure = roomEnclosure;
         this.width = width;
         this.height = height;
         this.linksToNeighbour = linksToNeighbour;
         this.funcPositionValidation = this.__IsValidPosition;
-        furnParameters = new Dictionary<string, object>();
+        furnParameters = new Dictionary<string, float>();
     }
 
     static public Furniture PlaceInstance(Furniture proto, Tile tile)
@@ -164,9 +171,10 @@ public class Furniture : IXmlSerializable
             return false;
         }
 
-         //TODO : s'assurer qu'il y a un mur en N/S ou en E/W
         return true;
     }
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///
     ///                                 SAVING & LOADING
@@ -184,12 +192,29 @@ public class Furniture : IXmlSerializable
         writer.WriteAttributeString("Y", tile.Y.ToString());
 
         writer.WriteAttributeString("objectType", objectType);
-        writer.WriteAttributeString("movementCost", movementCost.ToString());
+        //writer.WriteAttributeString("movementCost", movementCost.ToString());
 
+        foreach(string k in furnParameters.Keys)
+        {
+            writer.WriteElementString("name",k);
+            writer.WriteStartElement("value",furnParameters[k].ToString());
+            writer.WriteEndElement();
+
+        }
     }
     public void ReadXml(XmlReader reader)
     {
-        movementCost = int.Parse(reader.GetAttribute("movementCost"));
+        //movementCost = int.Parse(reader.GetAttribute("movementCost"));
+
+        if (reader.ReadToDescendant("Param"))
+        {
+            do
+            {
+                string k = reader.GetAttribute("name");
+                float v = float.Parse(reader.GetAttribute("Value"));
+                furnParameters[k] = v;
+            } while (reader.ReadToNextSibling("Param"));
+        }
     }
 
 }

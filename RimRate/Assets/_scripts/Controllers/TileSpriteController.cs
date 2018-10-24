@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public class TileSpriteController : MonoBehaviour
 {
-    public Sprite floorSprite; //FIXME
-    public Sprite waterSprite; //FIXME
-    public Sprite emptySprite; //FIXME
+    public Sprite floorSprite; //FIXME - Hardcoded
+    public Sprite waterSprite; //FIXME - Hardcoded
+    public Sprite emptySprite; //FIXME - Hardcoded
 
     Dictionary<Tile, GameObject> tileGameObjectMap;
 
